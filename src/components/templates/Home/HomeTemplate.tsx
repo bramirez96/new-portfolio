@@ -1,7 +1,6 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import React, { useCallback, useRef } from 'react';
-import classnames from '@brr-dev/classnames';
 import { HomeTemplateProps } from './HomeTemplate.types';
 import './HomeTemplate.scss';
 import { Header, Hero } from '../../organisms';
@@ -9,6 +8,7 @@ import { AiOutlineArrowDown } from 'react-icons/ai';
 import { Button } from '../../atoms';
 import FilterBar from './FilterBar';
 import { Coding } from '../../../assets/images';
+import {classnames} from "../../../libs";
 
 export default function HomeTemplate({
     className,
@@ -52,7 +52,7 @@ export default function HomeTemplate({
                         </span>
                         , and piecing together a few{' '}
                         <span className="alt">technical blog posts</span>{' '}
-                        explaining some of the stuff I've built.
+                        explaining some of the stuff i've built.
                     </p>
                     <p>
                         my goal is <span className="alt">3 posts a week</span>,

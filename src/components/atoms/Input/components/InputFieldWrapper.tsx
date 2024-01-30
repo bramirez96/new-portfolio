@@ -1,9 +1,9 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import React, { HTMLProps } from 'react';
-import classnames from '@brr-dev/classnames';
 import { InputSizes } from '../Input.types';
 import { useInputContext } from '../Input.context';
+import {classnames} from "../../../../libs";
 
 export type InputFieldWrapperProps = Omit<
     HTMLProps<HTMLLabelElement>,

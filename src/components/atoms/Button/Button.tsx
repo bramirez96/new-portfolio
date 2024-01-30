@@ -1,9 +1,9 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import { ButtonProps } from './Button.types';
-import classnames from '@brr-dev/classnames';
 import './Button.scss';
 import React from 'react';
+import {classnames} from "../../../libs";
 
 export default function Button({
     children,

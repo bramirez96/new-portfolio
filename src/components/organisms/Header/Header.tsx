@@ -1,11 +1,11 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import { HTMLProps } from 'react';
-import classnames from '@brr-dev/classnames';
 import { Button, Logo } from '../../atoms';
 import './Header.scss';
 import { useMediaQueries } from '../../../utils';
 import { MediaQueryMap, UISizes } from '../../lib';
+import {classnames} from "../../../libs";
 
 export type HeaderProps = HTMLProps<HTMLDivElement> & {
     smallHeader?: boolean;

@@ -1,6 +1,6 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MediaQueryMap } from '../components/lib';
 
 const _MED = '525px';
@@ -11,22 +11,11 @@ const _2XLARGE = '1000px';
 export default function useMediaQueries({
     log = false,
 }: { log?: boolean } = {}) {
-    const [_isMedQuery, _isLargeQuery, _isXLargeQuery, _is2XLargeQuery] =
-        useMemo(
-            () => [
-                window.matchMedia(`(min-width: ${_MED})`),
-                window.matchMedia(`(min-width: ${_LARGE})`),
-                window.matchMedia(`(min-width: ${_XLARGE})`),
-                window.matchMedia(`(min-width: ${_2XLARGE})`),
-            ],
-            []
-        );
-
-    const [isSmall, setIsSmall] = useState(!_isMedQuery.matches);
-    const [isMed, setIsMed] = useState(_isMedQuery.matches);
-    const [isLarge, setIsLarge] = useState(_isLargeQuery.matches);
-    const [isXLarge, setIsXLarge] = useState(_isXLargeQuery.matches);
-    const [is2XLarge, setIs2XLarge] = useState(_is2XLargeQuery.matches);
+    const [isSmall, setIsSmall] = useState(false);
+    const [isMed, setIsMed] = useState(false);
+    const [isLarge, setIsLarge] = useState(false);
+    const [isXLarge, setIsXLarge] = useState(false);
+    const [is2XLarge, setIs2XLarge] = useState(false);
 
     useEffect(() => {
         function _MedQueryHandler(event: MediaQueryListEvent) {
@@ -36,6 +25,7 @@ export default function useMediaQueries({
             setIsXLarge(false);
             setIs2XLarge(false);
         }
+
         function _LargeQueryHandler(event: MediaQueryListEvent) {
             setIsSmall(false);
             setIsMed(!event.matches);
@@ -43,6 +33,7 @@ export default function useMediaQueries({
             setIsXLarge(false);
             setIs2XLarge(false);
         }
+
         function _XLargeQueryHandler(event: MediaQueryListEvent) {
             setIsSmall(false);
             setIsMed(false);
@@ -50,6 +41,7 @@ export default function useMediaQueries({
             setIsXLarge(event.matches);
             setIs2XLarge(false);
         }
+
         function _2XLargeQueryHandler(event: MediaQueryListEvent) {
             setIsSmall(false);
             setIsMed(false);
@@ -58,10 +50,23 @@ export default function useMediaQueries({
             setIs2XLarge(event.matches);
         }
 
+        const _isMedQuery = window.matchMedia(`(min-width: ${_MED})`);
+        const _isLargeQuery = window.matchMedia(`(min-width: ${_LARGE})`);
+        const _isXLargeQuery = window.matchMedia(`(min-width: ${_XLARGE})`);
+        const _is2XLargeQuery = window.matchMedia(`(min-width: ${_2XLARGE})`);
+
         _isMedQuery.addEventListener('change', _MedQueryHandler);
         _isLargeQuery.addEventListener('change', _LargeQueryHandler);
         _isXLargeQuery.addEventListener('change', _XLargeQueryHandler);
         _is2XLargeQuery.addEventListener('change', _2XLargeQueryHandler);
+
+        // Also check on mount
+        setIsSmall(!_isMedQuery.matches);
+        setIsMed(_isMedQuery.matches && !_isLargeQuery.matches);
+        setIsLarge(_isLargeQuery.matches && !_isXLargeQuery.matches)
+        setIsXLarge(_isXLargeQuery.matches && !_is2XLargeQuery.matches)
+        setIs2XLarge(_is2XLargeQuery.matches)
+
         return () => {
             _isMedQuery.removeEventListener('change', _MedQueryHandler);
             _isLargeQuery.removeEventListener('change', _LargeQueryHandler);
@@ -74,14 +79,10 @@ export default function useMediaQueries({
         setIsLarge,
         setIsXLarge,
         setIs2XLarge,
-        _isMedQuery,
-        _isLargeQuery,
-        _isXLargeQuery,
-        _is2XLargeQuery,
     ]);
 
     useEffect(() => {
-        if (log) {
+        if (log || true) {
             console.log({ isSmall, isMed, isLarge, isXLarge, is2XLarge });
         }
     }, [isSmall, isMed, isLarge, isXLarge, is2XLarge, log]);

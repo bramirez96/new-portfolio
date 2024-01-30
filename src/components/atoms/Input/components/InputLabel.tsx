@@ -2,7 +2,7 @@
 
 import { HTMLProps } from 'react';
 import { useInputContext } from '../Input.context';
-import classnames from '@brr-dev/classnames';
+import {classnames} from "../../../../libs";
 
 export type InputLabelProps = Omit<
     HTMLProps<HTMLLabelElement>,

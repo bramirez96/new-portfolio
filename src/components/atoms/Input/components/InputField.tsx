@@ -1,7 +1,7 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import React, { HTMLProps } from 'react';
-import classnames from '@brr-dev/classnames';
+import {classnames} from "../../../../libs";
 
 export type InputFieldProps = HTMLProps<HTMLDivElement> & {
     children?: React.ReactNode;

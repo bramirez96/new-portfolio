@@ -1,10 +1,10 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import React from 'react';
-import classnames from '@brr-dev/classnames';
 import './Logo.scss';
 import { Link } from 'react-router-dom';
 import { UISizes } from '../../lib';
+import {classnames} from "../../../libs";
 
 export type LogoProps = Omit<React.HTMLProps<HTMLDivElement>, 'size'> & {
     size?: UISizes;

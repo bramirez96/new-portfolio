@@ -5,7 +5,7 @@ import { ButtonProps } from './Button.types';
 import Button from './Button';
 import React, { useCallback } from 'react';
 import { createRipple } from '../../../utils';
-import classnames from '@brr-dev/classnames';
+import {classnames} from "../../../libs";
 
 export type ButtonContainerProps = ButtonProps;
 

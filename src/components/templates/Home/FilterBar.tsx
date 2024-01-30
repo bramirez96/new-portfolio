@@ -1,10 +1,10 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import React from 'react';
-import classnames from '@brr-dev/classnames';
 import { Button, Input } from '../../atoms';
 import { AiOutlineSearch } from 'react-icons/ai';
 import './FilterBar.scss';
+import {classnames} from "../../../libs";
 
 export type FilterBarProps = React.HTMLProps<HTMLDivElement>;
 export default function FilterBar(props: FilterBarProps) {
