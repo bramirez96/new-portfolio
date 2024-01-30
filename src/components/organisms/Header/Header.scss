@@ -1,0 +1,46 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import '../../../styles/globals';
+
+.ui-header {
+    --header-vertical-padding: 0.5rem;
+    --header-side-padding: 0.5rem;
+
+    // Container layout
+    padding: var(--header-vertical-padding) var(--header-side-padding);
+    width: 100%;
+
+    // Add content-safe padding for consistent page layout
+    @include content-safe($min-padding: var(--header-side-padding));
+
+    // Container flex
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+    .ui-section-right {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+
+        .ui-button {
+            &:not(.ui-button-ghost) {
+                margin-left: 0.25rem;
+            }
+        }
+
+        a.ui-active-nav-item > button {
+            --button-text-color: #{$carrot-tint-01};
+        }
+    }
+
+    @include media-large {
+        & {
+            --header-vertical-padding: 1rem;
+            --header-side-padding: 1.5rem;
+        }
+    }
+}

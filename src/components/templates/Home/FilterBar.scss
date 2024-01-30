@@ -1,0 +1,24 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import '../../../styles/globals';
+
+.ui-filter-bar {
+    --filter-bar-bg-color: transparent;
+
+    text-align: center;
+
+    @include content-safe($min-padding: 0.5rem);
+
+    & > .ui-filter-items {
+        // Flex container styling
+        display: inline-flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        gap: 0.5rem;
+
+        //
+        background-color: var(--filter-bar-bg-color);
+        padding: $bui-border-radius;
+        border-radius: $bui-border-radius;
+    }
+}

@@ -1,0 +1,86 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+/* Design System Variables */
+
+// Carrot - primary action color
+$carrot: #f36c35;
+
+// Carrot shades
+$carrot-shade-01: #f25e23;
+$carrot-shade-02: #f15112;
+$carrot-shade-03: #e34a0d;
+$carrot-shade-04: #d2440c;
+$carrot-shade-05: #c03e0b;
+$carrot-shade-06: #af390a;
+$carrot-shade-07: #9d3309;
+$carrot-shade-08: #8c2d08;
+$carrot-shade-09: #7a2807;
+$carrot-shade-10: #692206;
+$carrot-shade-11: #571c05;
+$carrot-shade-12: #461704;
+$carrot-shade-13: #341103;
+$carrot-shade-14: #230b02;
+$carrot-shade-15: #110601;
+
+// Carrot tints
+$carrot-tint-01: #f47b49;
+$carrot-tint-02: #f5895d;
+$carrot-tint-03: #f79872;
+$carrot-tint-04: #f8a786;
+$carrot-tint-05: #f9b69a;
+$carrot-tint-06: #fac4ae;
+$carrot-tint-07: #fbd3c2;
+$carrot-tint-08: #fde2d7;
+$carrot-tint-09: #fef0eb;
+
+// UI Colors
+$ui-red: #eb3b5a;
+$ui-green: #20bf6b;
+$ui-yellow: #fed330;
+$ui-blue: #4b7bec;
+
+// Greyscale
+$white: #f5f5f5;
+$grey-1: #f8f9fa;
+$grey-2: #e9ecef;
+$grey-3: #dee2e6;
+$grey-4: #ced4da;
+$grey-5: #adb5bd;
+$grey-6: #6c757d;
+$grey-7: #495057;
+$grey-8: #343a40;
+$grey-9: #212529;
+$black: #111111;
+
+// Dark mode UI greys
+$surface-01: transparentize($white, 0.95);
+$surface-02: transparentize($white, 0.93);
+$surface-03: transparentize($white, 0.92);
+$surface-04: transparentize($white, 0.91);
+$surface-05: transparentize($white, 0.89);
+$surface-06: transparentize($white, 0.88);
+$surface-07: transparentize($white, 0.86);
+$surface-08: transparentize($white, 0.85);
+$surface-09: transparentize($white, 0.84);
+
+// Container styling
+$bui-border-radius: 0.375rem;
+
+// Animation defaults
+$bui-animation-duration: 0.375s;
+
+// Shadow styling
+$bui-shadow-color: $grey-6;
+
+// Border styling
+
+// Input styling
+$bui-placeholder-color: #8c939b;
+$bui-placeholder-color-hover: darken($bui-placeholder-color, 10%);
+$bui-placeholder-thin-color: #6d757e;
+
+// Media query vars
+$bui-medium-query: 525px;
+$bui-large-query: 675px;
+$bui-x-large-query: 850px;
+$bui-2-x-large-query: 1000px;

@@ -1,0 +1,82 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import '../../../styles/globals';
+
+.ui-logo {
+    --logo-font-size: 1.75rem;
+    --logo-line-height: 2.125rem;
+    --logo-text-color: #{$carrot-tint-01};
+    --logo-bg-color: transparent;
+    --logo-vertical-padding: 0.375rem;
+    --logo-side-padding: 1.125rem;
+    --logo-bar-width: 0.5rem;
+
+    // Block styling
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: var(--logo-vertical-padding) var(--logo-side-padding);
+    background-color: var(--logo-bg-color);
+
+    @include pressable(0.02, 0.0125);
+
+    // Border styling
+    border: 1px solid var(--logo-text-color);
+    border-left: var(--logo-bar-width) solid var(--logo-text-color);
+    border-radius: #{$bui-border-radius};
+
+    // Animation
+    transition-property: color, border-color, padding, font-size, line-height,
+        transform;
+    transition-duration: #{$bui-animation-duration};
+
+    & > span {
+        // Logo font styling
+        font-family: 'Roboto Slab', serif;
+        font-weight: 500;
+        font-size: var(--logo-font-size);
+        line-height: var(--logo-line-height);
+        letter-spacing: 0.0125rem;
+        color: var(--logo-text-color);
+        transition-property: color, border-color, padding, font-size,
+            line-height;
+        transition-duration: #{$bui-animation-duration};
+    }
+
+    &.ui-size-2x-small {
+        --logo-font-size: 0.875rem;
+        --logo-line-height: 1.25rem;
+        --logo-vertical-padding: 0.125rem;
+        --logo-side-padding: 0.5rem;
+        --logo-bar-width: #{$bui-border-radius};
+    }
+
+    &.ui-size-x-small {
+        --logo-font-size: 0.875rem;
+        --logo-line-height: 1.25rem;
+        --logo-vertical-padding: 0.125rem;
+        --logo-side-padding: 0.5rem;
+        --logo-bar-width: #{$bui-border-radius};
+    }
+
+    &.ui-size-small {
+        --logo-font-size: 1.5rem;
+        --logo-line-height: 1.875rem;
+        --logo-vertical-padding: 0.25rem;
+        --logo-side-padding: 1rem;
+    }
+
+    &.ui-size-large {
+        --logo-font-size: 2rem;
+        --logo-line-height: 2.375rem;
+        --logo-vertical-padding: 0.5rem;
+        --logo-side-padding: 1.25rem;
+    }
+
+    &.ui-size-x-large {
+    }
+
+    &.ui-size-2x-large {
+    }
+}

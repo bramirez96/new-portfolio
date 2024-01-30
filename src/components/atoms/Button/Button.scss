@@ -1,0 +1,287 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import '../../../styles/globals';
+
+.ui-button {
+    // Button colors
+    --button-bg-color: #{$carrot};
+    --button-text-color: #{$white};
+    --button-border-color: var(--button-color, #{$carrot});
+
+    // Button text styles
+    --button-font-size: 0.875rem;
+    --button-line-height: 1.125rem;
+    --button-text-underline-color: transparent;
+    --button-icon-size: var(--button-line-height);
+
+    // Button container spacing
+    --button-vertical-padding: 0.25rem;
+    --button-side-padding: 0.625rem;
+    --button-text-side-padding: 0.125rem;
+    --button-flex-gap: 0.25rem;
+    --button-outline-offset: 0.375rem;
+
+    // Button transition styles
+    --button-color-transition-speed: #{$bui-animation-duration};
+
+    // Buttons should lay flat on surfaces, with a slight raised edge
+    @include raised;
+
+    // Press animation
+    @include pressable(0.01);
+
+    // Add in styling to support our ripple on click effect
+    @include ripple-container;
+
+    // Button container styles
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--button-flex-gap);
+    padding: var(--button-vertical-padding) var(--button-side-padding);
+
+    // Button theme styling
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    border-radius: var(--button-border-radius, $bui-border-radius);
+    border: 1px solid var(--button-border-color);
+
+    // Button font styling
+    font-family: 'Roboto Slab', sans-serif;
+    font-weight: 400;
+    font-size: var(--button-font-size);
+    line-height: var(--button-line-height);
+
+    // Button interaction styling
+    cursor: pointer;
+    outline-offset: var(--button-outline-offset);
+    outline-color: var(--button-outline-color, $ui-blue);
+
+    // Button transition styling
+    transition-property: background-color, border-color, color, padding,
+        font-size, line-height, gap, box-shadow, transform;
+    transition-duration: var(--button-color-transition-speed);
+
+    // Button icon styling
+    & > .ui-button-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &,
+        & > svg {
+            height: var(--button-icon-size);
+            width: var(--button-icon-size);
+            color: var(--button-text-color);
+            transition-property: color, border-color, transform;
+            transition-duration: $bui-animation-duration;
+        }
+    }
+
+    // Button text spacing
+    & > .ui-button-text-content {
+        padding: 0 var(--button-text-side-padding);
+        color: var(--button-text-color);
+        transition-property: color, border-color, transform;
+        transition-duration: $bui-animation-duration;
+        border-bottom: 1px solid var(--button-text-underline-color);
+    }
+
+    // Alternate sizing
+    &.ui-button-small {
+        --button-font-size: 0.75rem;
+        --button-line-height: 1rem;
+        --button-vertical-padding: 0.125rem;
+        --button-side-padding: 0.375rem;
+        --button-text-side-padding: 0.125rem;
+        --button-flex-gap: 0.125rem;
+    }
+
+    &.ui-button-large {
+        --button-font-size: 1.125rem;
+        --button-line-height: 1.375rem;
+        --button-vertical-padding: 0.375rem;
+        --button-side-padding: 0.75rem;
+        --button-flex-gap: 0.375rem;
+    }
+
+    &.ui-button-x-large {
+        --button-font-size: 1.25rem;
+        --button-line-height: 1.75rem;
+        --button-vertical-padding: 0.375rem;
+        --button-side-padding: 0.925rem;
+        --button-flex-gap: 0.5rem;
+        --button-text-side-padding: 0.125rem;
+    }
+
+    &.ui-button-2x-large {
+        --button-font-size: 1.625rem;
+        --button-line-height: 2rem;
+        --button-vertical-padding: calc(0.75rem - (0.125rem / 2));
+        --button-side-padding: calc(0.625rem + (0.125rem / 2));
+        --button-text-side-padding: 0.25rem;
+        --button-flex-gap: 0.5rem;
+    }
+
+    // Square button styling (icon and no text, show a square)
+    &.ui-button-square {
+        --ui-ripple-scale: 10;
+        --button-padding-one-third: calc(var(--button-vertical-padding) / 3);
+        --button-icon-size: calc(
+            var(--button-line-height) + (var(--button-padding-one-third) * 2)
+        );
+
+        @include pressable(0.025, 0.0125);
+
+        padding: calc(
+            var(--button-vertical-padding) - var(--button-padding-one-third)
+        );
+    }
+
+    // Dark mode
+    .ui-dark-mode & {
+        @include raised(0, $surface-01);
+    }
+
+    // Interactions
+
+    &:hover {
+        --button-bg-color: #{$carrot-tint-01};
+        --button-border-color: #{$carrot-tint-01};
+    }
+
+    &:active {
+        --button-bg-color: #{$carrot-shade-02};
+        --button-border-color: #{$carrot-shade-02};
+    }
+
+    &:focus:not(:focus-visible) {
+        outline: none;
+    }
+
+    // Variants
+    &.ui-button-secondary {
+        --button-bg-color: transparent;
+        --button-text-color: #{$carrot-shade-02};
+        --button-border-color: #{$carrot-shade-02};
+
+        // Add in styling to support our ripple on click effect
+        @include ripple-container(transparentize($carrot-shade-01, 0.9));
+
+        &:hover {
+            --button-border-color: #{$carrot};
+            --button-text-color: #{$carrot};
+            --button-bg-color: #{transparentize($carrot-shade-02, 0.925)};
+        }
+
+        &:active {
+            --button-text-color: #{$carrot-shade-02};
+            --button-border-color: #{$carrot-shade-02};
+            --button-bg-color: #{transparentize($carrot-shade-02, 0.875)};
+        }
+
+        .ui-dark-mode & {
+            --button-border-color: #{$carrot};
+            --button-text-color: #{$carrot};
+
+            &:hover {
+                --button-border-color: #{$carrot-tint-02};
+                --button-text-color: #{$carrot-tint-02};
+                --button-bg-color: #{transparentize($carrot-tint-01, 0.85)};
+            }
+
+            &:active {
+                --button-border-color: #{$carrot};
+                --button-text-color: #{$carrot};
+                --button-bg-color: #{transparentize($carrot, 0.9)};
+            }
+        }
+    }
+
+    &.ui-button-ghost {
+        --button-bg-color: transparent;
+        --button-border-color: transparent;
+        --button-text-color: #{$black};
+
+        // Add in styling to support our ripple on click effect
+        @include ripple-container(transparentize($grey-6, 0.9));
+
+        // Ghost buttons should be flat and invisible until interacted with
+        @include raised(false);
+
+        &:hover,
+        &:active {
+            @include raised(0);
+        }
+
+        &:hover {
+            --button-bg-color: #{transparentize($black, 0.95)};
+            --button-border-color: #{transparentize($black, 0.5)};
+        }
+
+        &:active {
+            --button-bg-color: #{transparentize($black, 0.85)};
+            --button-border-color: #{transparentize($black, 0.25)};
+        }
+
+        .ui-dark-mode & {
+            --button-text-color: #{$white};
+
+            @include ripple-container(transparentize($grey-5, 0.8));
+
+            &:hover {
+                --button-border-color: #{transparentize($white, 0.375)};
+                --button-bg-color: #{transparentize($white, 0.85)};
+            }
+
+            &:active {
+                --button-border-color: #{transparentize($white, 0.625)};
+                --button-bg-color: #{transparentize($white, 0.95)};
+            }
+        }
+    }
+
+    &.ui-button-text {
+        --button-bg-color: transparent;
+        --button-border-color: transparent;
+        --button-text-color: #{$carrot-shade-02};
+        --button-text-side-padding: 0;
+
+        @include raised(false);
+        @include pressable(0.0375, 0.0125);
+        @include ripple-container(false);
+
+        a & {
+            --button-text-underline-color: var(--button-text-color);
+        }
+
+        &:hover {
+            // Extra light on the text buttons, difference is hard to see
+            --button-text-color: #{$carrot-tint-01};
+        }
+
+        &:active {
+            --button-text-color: #{$carrot-shade-04};
+        }
+
+        .ui-dark-mode & {
+            --button-text-color: #{$carrot};
+
+            &:hover {
+                --button-text-color: #{$carrot-tint-01};
+            }
+
+            &:active {
+                --button-text-color: #{$carrot-shade-03};
+            }
+        }
+
+        //a:visited:not(:hover) > &,
+        //a:visited:not(:hover) > & > .ui-button-text-content,
+        //a:visited:not(:hover) > & svg {
+        //    color: $carrot-shade-05;
+        //    border-color: $carrot-shade-05;
+        //}
+    }
+}

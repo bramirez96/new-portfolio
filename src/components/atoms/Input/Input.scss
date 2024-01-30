@@ -1,0 +1,316 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import '../../../styles/globals';
+
+// Top-level input component wrapper
+.ui-input-field-wrapper {
+    /* Input Component Variables */
+
+    // Padding variables
+    --input-top-padding: 0.3125rem;
+    --input-bottom-padding: 0.3125rem;
+    --input-side-padding: 0.5rem;
+
+    // Styling variables
+    --input-bg-color: transparent;
+    --input-label-bg-color: #{$white};
+    --input-text-color: #{$black};
+    --input-placeholder-text-color: #{$bui-placeholder-color};
+
+    // Font variables
+    --input-font-family: 'Roboto Slab', serif;
+    --input-font-weight: 400;
+    --input-font-size: 0.875rem;
+    --input-line-height: 1.25rem;
+
+    // Label variables
+    --input-label-offset: 0.3rem;
+    --input-label-font-family: Roboto, sans-serif;
+    --input-label-font-weight: 400;
+    --input-label-font-size: 0.75rem;
+    --input-label-line-height: 1rem;
+    --input-label-text-color: #{$bui-placeholder-thin-color};
+    --input-label-left-space: 0.375rem;
+    --input-label-side-padding: 0.25rem;
+
+    // Border variables
+    --input-border-width: 1px;
+    --input-border-color: #{$grey-4};
+    --input-border-style: solid;
+
+    // Icon variables
+    --input-icon-size: 1.25rem;
+    --input-icon-color: #{$black};
+
+    /* Dark Mode Variables */
+    .ui-dark-mode & {
+        --input-text-color: #{$white};
+        --input-label-text-color: #{$grey-6};
+        --input-border-color: #{$grey-6};
+        --input-icon-color: #{$grey-5};
+        --input-placeholder-text-color: #{$grey-6};
+        --input-label-bg-color: #{$black};
+    }
+
+    /* Input Component Styles */
+
+    position: relative;
+    display: inline-flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+
+    /* Input Sub-Components */
+
+    // Input label
+    & > .ui-input-label {
+        // Label font styling
+        font-family: var(--input-label-font-family);
+        font-weight: var(--input-label-font-weight);
+        font-size: var(--input-label-font-size);
+        line-height: var(--input-label-line-height);
+        color: var(--input-label-text-color);
+
+        // Slightly increase label letter spacing for readability
+        letter-spacing: 0.01rem;
+
+        // Transition styling
+        transition-property: color, font-size, line-height, top, left;
+        transition-duration: $bui-animation-duration;
+
+        // Label positioning
+        z-index: 5;
+        margin-bottom: calc(
+            0rem - (var(--input-line-height) / 2) + var(--input-label-offset)
+        );
+        padding-left: var(--input-label-left-space);
+
+        & > .ui-input-label-text {
+            padding: 0 var(--input-label-side-padding);
+            background-color: var(--input-label-bg-color);
+        }
+
+        .ui-required-indicator {
+            color: $ui-red;
+        }
+    }
+
+    // This is the div that we're styling to look like a text input field
+    & > .ui-input-field {
+        /* Container Styling */
+
+        // Container layout
+        display: inline-flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        padding: 0;
+        gap: 0;
+
+        // Container styling
+        background-color: var(--input-bg-color);
+        border-radius: $bui-border-radius;
+        border: var(--input-border-width) var(--input-border-style)
+            var(--input-border-color);
+
+        // Container transition styling
+        transition-property: background-color, border-color, color, padding,
+            font-size, line-height, gap;
+        transition-duration: $bui-animation-duration;
+
+        /* Mixins */
+
+        // Lay flat on the surface it's placed on, with slight raised edge
+        @include raised(0);
+
+        // Add ripple container styling
+        @include ripple-container(transparentize($grey-5, 0.9));
+
+        .ui-dark-mode & {
+            @include ripple-container(transparentize($grey-5, 0.875));
+        }
+
+        // Add a text cursor to the container... (1/2)
+        cursor: text;
+
+        // Styles that apply to the left, middle, and right blocks
+        & > .ui-input-field-section {
+            // ...and all sub-components. (2/2)
+            cursor: text;
+
+            // Block styling
+            padding: 0 calc(var(--input-side-padding) / 2);
+            display: inline-flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: space-between;
+
+            // Icon styling
+            & > svg {
+                width: var(--input-icon-size);
+                height: var(--input-icon-size);
+                color: var(--input-icon-color);
+                transition: color $bui-animation-duration;
+            }
+
+            // Left block styling
+            &.ui-section-left {
+            }
+
+            // Middle block styling
+            &.ui-section-middle {
+                // Grow to fill the available space
+                flex-grow: 1;
+
+                // No side padding, the left and right blocks handle it!
+                padding: var(--input-top-padding) 0 var(--input-bottom-padding);
+
+                // Actual input element styling
+                & > input {
+                    // Input appearance reset
+                    appearance: none;
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    margin: 0;
+
+                    // Input font styling
+                    font-family: var(--input-font-family);
+                    font-weight: var(--input-font-weight);
+                    font-size: var(--input-font-size);
+                    line-height: var(--input-line-height);
+                    color: var(--input-text-color);
+
+                    &:focus,
+                    &:focus-visible {
+                        // Custom focus ring (2/2) - hide the default input focus ring
+                        outline: none;
+                    }
+
+                    &::placeholder {
+                        color: var(--input-placeholder-text-color);
+                        transition: color $bui-animation-duration;
+                    }
+                }
+            }
+
+            // Right block styling
+            &.ui-section-right {
+            }
+        }
+    }
+
+    /* Interaction Styling */
+
+    // Hover styling
+    &:hover {
+        --input-border-color: #{$grey-7};
+        --input-label-text-color: #{$grey-7};
+        --input-placeholder-text-color: #{$bui-placeholder-color-hover};
+
+        // Dark mode hover theming
+        .ui-dark-mode & {
+            --input-text-color: #{$white};
+            --input-label-text-color: #{$bui-placeholder-color};
+            --input-border-color: #{$grey-5};
+            --input-placeholder-text-color: #{$bui-placeholder-color};
+        }
+    }
+
+    &.ui-focus {
+        --input-label-text-color: #{$ui-blue};
+        --input-placeholder-text-color: #{$bui-placeholder-color-hover};
+
+        .ui-dark-mode & {
+            --input-label-text-color: #{$ui-blue};
+            --input-placeholder-text-color: #{$bui-placeholder-color};
+        }
+
+        & > label {
+            transition-duration: 0s;
+        }
+
+        & > .ui-input-field {
+            // Custom focus ring (1/2) - Add an outline hiding the existing border
+            outline: 2px solid $ui-blue;
+            outline-offset: calc(0px - var(--input-border-width));
+
+            @include raised(1);
+        }
+    }
+
+    &.ui-empty {
+        --input-icon-color: #{$grey-6};
+
+        &:hover {
+            --input-icon-color: #{$grey-7};
+
+            .ui-dark-mode & {
+                --input-icon-color: #{$bui-placeholder-color};
+            }
+        }
+
+        &.ui-focus {
+            --input-icon-color: #{$black};
+
+            .ui-dark-mode & {
+                --input-icon-color: #{$grey-5};
+            }
+        }
+    }
+
+    /* Variant Styling */
+
+    &.ui-size-small {
+        --input-font-size: 0.75rem;
+        --input-line-height: 1.125rem;
+        --input-top-padding: 0.125rem;
+        --input-bottom-padding: 0.125rem;
+        --input-side-padding: 0.375rem;
+        --input-icon-size: 1rem;
+        --input-label-font-size: 0.675rem;
+        --input-label-line-height: 0.925rem;
+        --input-label-left-space: 0.375rem;
+        --input-label-offset: 0.3rem;
+    }
+
+    &.ui-size-large {
+        --input-font-size: 1.125rem;
+        --input-line-height: 1.375rem;
+        --input-top-padding: 0.5rem;
+        --input-bottom-padding: 0.5rem;
+        --input-side-padding: 0.75rem;
+        --input-flex-gap: 0.5rem;
+        --input-icon-size: 1.5rem;
+        --input-label-font-size: 0.825rem;
+        --input-label-line-height: 1.25rem;
+        --input-label-left-space: 0.5rem;
+        --input-label-offset: 0.25rem;
+    }
+
+    &.ui-size-x-large {
+        --input-font-size: 1.375rem;
+        --input-line-height: 1.625rem;
+        --input-top-padding: 0.625rem;
+        --input-bottom-padding: 0.625rem;
+        --input-side-padding: 0.875rem;
+        --input-flex-gap: 0.75rem;
+        --input-icon-size: 1.75rem;
+        --input-label-font-size: 0.925rem;
+        --input-label-line-height: 1.325rem;
+        --input-label-offset: 0.325rem;
+        --input-label-left-space: 0.625rem;
+    }
+
+    &.ui-size-2x-large {
+        --input-font-size: 1.625rem;
+        --input-line-height: 1.875rem;
+        --input-top-padding: 0.75rem;
+        --input-bottom-padding: 0.75rem;
+        --input-side-padding: 1rem;
+        --input-flex-gap: 0.875rem;
+        --input-icon-size: 1.875rem;
+        --input-label-font-size: 1rem;
+        --input-label-line-height: 1.5rem;
+        --input-label-offset: 0.375rem;
+        --input-label-left-space: 0.75rem;
+    }
+}

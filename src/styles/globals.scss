@@ -1,0 +1,12 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import './variables';
+@import './mixins';
+
+// TODO decide which fonts to use, delete the rest
+@import 'https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap';
+
+* {
+    box-sizing: border-box;
+    max-width: 100%;
+}

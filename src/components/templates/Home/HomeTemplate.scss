@@ -1,0 +1,122 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import '../../../styles/globals';
+
+.ui-template-home {
+    @include page-template;
+
+    .ui-header {
+        background-color: $surface-01;
+    }
+
+    .ui-hero {
+    }
+
+    & > .ui-line {
+        margin: 0 auto;
+        height: 0.0625rem;
+        width: clamp(3rem, 75%, 48rem);
+        background-color: transparentize($carrot-tint-01, 0.5);
+
+        @include media-med {
+            margin: 1rem auto;
+        }
+
+        @include media-2x-large {
+            margin: 2rem auto 3rem;
+        }
+    }
+
+    & > .project-indicator {
+        @include content-safe;
+
+        display: none;
+
+        @include media-2x-large {
+            display: block;
+        }
+
+        & > .ui-button-text {
+            @include pressable(0.075, 0.001);
+
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 auto;
+
+            // Font/icon styling
+            font-family: 'Roboto Slab', serif;
+            font-weight: 300;
+            font-size: 1rem;
+            line-height: 1.25rem;
+        }
+    }
+
+    & > .ui-filter-bar {
+        --filter-bar-bg-color: #{$surface-02};
+
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+
+        @include media-2x-large {
+            margin-bottom: 3rem;
+        }
+    }
+
+    & > .temporary-uh-oh-div {
+        @include content-safe;
+
+        & > .uh-oh-wrapper {
+            // Flex container styling
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: stretch;
+            justify-content: space-between;
+            gap: 1rem;
+            max-width: 37.5rem;
+            margin: 0 auto;
+
+            // Styling
+            background-color: $surface-01;
+            padding: 1rem;
+            border-radius: $bui-border-radius;
+            border: 1px solid $surface-03;
+            color: transparentize($white, 0.125);
+
+            .alt {
+                color: transparentize($carrot-tint-01, 0.125);
+            }
+
+            @include media-large {
+                padding: 2rem 3rem;
+            }
+
+            img {
+                max-height: 30vh;
+            }
+
+            ul {
+                padding: 0 0 0 1rem;
+
+                @include media-med {
+                    padding-left: 1.5rem;
+                }
+            }
+
+            p,
+            ul {
+                margin: 0;
+                font-family: Roboto, sans-serif;
+                font-weight: 300;
+                font-size: 0.875rem;
+                line-height: 1.125rem;
+
+                @include media-med {
+                    font-size: 1rem;
+                    line-height: 1.375rem;
+                }
+            }
+        }
+    }
+}
