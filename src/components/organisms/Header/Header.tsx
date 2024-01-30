@@ -44,19 +44,19 @@ export default function Header({ className, ...props }: HeaderProps) {
             >
                 <Button
                     size={buttonSize}
-                    link="/bio"
-                    linkTarget="_self"
-                    type="ghost"
-                >
-                    bio
-                </Button>
-                <Button
-                    size={buttonSize}
                     link="/"
                     linkTarget="_self"
                     type="ghost"
                 >
                     projects
+                </Button>
+                <Button
+                    size={buttonSize}
+                    link="/bio"
+                    linkTarget="_self"
+                    type="ghost"
+                >
+                    bio
                 </Button>
                 <Button
                     size={buttonSize}
