@@ -1,7 +1,7 @@
 // ! Copyright (c) 2024, Brandon Ramirez
 
 import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren } from 'react';
-import { classnames } from '../../../classnames';
+import { classnames } from '../../../libs/classnames';
 import './Text.scss';
 
 export type TextSizes =
