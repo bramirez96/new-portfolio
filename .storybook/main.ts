@@ -1,28 +1,23 @@
-// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
-
-import type { StorybookConfig } from '@storybook/react-vite';
+import type { StorybookConfig } from "@storybook/react-webpack5";
 
 const config: StorybookConfig = {
-    stories: [
-        '../src/components/@(lib|atoms|molecules|organisms|templates)/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    ],
+    stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
     addons: [
-        'storybook-dark-mode',
-        '@storybook/addon-essentials',
-        '@storybook/addon-interactions',
+        "storybook-dark-mode",
+        "@storybook/preset-create-react-app",
+        "@storybook/addon-onboarding",
+        "@storybook/addon-links",
+        "@storybook/addon-essentials",
+        "@chromatic-com/storybook",
+        "@storybook/addon-interactions",
     ],
     framework: {
-        name: '@storybook/react-vite',
-        options: {
-            builder: {
-                viteConfigPath: 'apps/portfolio/vite.config.ts',
-            },
-        },
+        name: "@storybook/react-webpack5",
+        options: {},
     },
+    docs: {
+        autodocs: "tag",
+    },
+    staticDirs: ["../public"],
 };
-
 export default config;
-
-// To customize your Vite configuration you can use the viteFinal field.
-// Check https://storybook.js.org/docs/react/builders/vite#configuration
-// and https://nx.dev/recipes/storybook/custom-builder-configs

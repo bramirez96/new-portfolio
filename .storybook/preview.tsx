@@ -1,29 +1,32 @@
-// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
-
-import { Preview } from '@storybook/react';
-import { useDarkMode } from 'storybook-dark-mode';
-import { themes } from '@storybook/theming';
-import { BrowserRouter } from 'react-router-dom';
-import { DarkModeProvider } from '../src/utils';
+import type { Preview } from "@storybook/react";
+import { themes } from "@storybook/theming";
+import { useDarkMode } from "storybook-dark-mode";
+import { DarkModeProvider } from "../src/utils";
+import { BrowserRouter } from "react-router-dom";
 
 const preview: Preview = {
     parameters: {
+        controls: {
+            matchers: {
+                color: /(background|color)$/i,
+                date: /Date$/i,
+            },
+        },
         backgrounds: {
             disable: true,
             grid: { disable: true },
         },
         darkMode: {
             stylePreview: true,
-            classTarget: 'body',
-            darkClass: 'ui-dark-mode',
-            lightClass: 'ui-light-mode',
+            classTarget: "body",
+            darkClass: "ui-dark-mode",
+            lightClass: "ui-light-mode",
             dark: themes.dark,
-            light: themes.dark,
+            light: themes.light,
         },
     },
-
     decorators: [
-        function _StorybookDocContainer(renderStory) {
+        function _DarkModeWrapper(renderStory) {
             const darkMode = useDarkMode();
 
             return (
@@ -32,7 +35,7 @@ const preview: Preview = {
                 </DarkModeProvider>
             );
         },
-        function _StorybookRouter(renderStory) {
+        function _RouterWrapper(renderStory) {
             return <BrowserRouter>{renderStory()}</BrowserRouter>;
         },
     ],
