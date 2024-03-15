@@ -1,0 +1,49 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import "../../../styles/globals";
+
+.ui-console {
+    // Container layout
+    padding: 1rem;
+
+    // Container styling
+    background-color: $white;
+    border: 1px solid $black;
+    border-radius: $bui-border-radius;
+
+    .ui-dark-mode & {
+        background-color: $black;
+        border-color: $white;
+    }
+
+    .ui-console-input-wrapper {
+        // Input container styling
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: flex-start;
+
+        // Input font styling
+        color: $black;
+        font-family: monospace;
+        font-size: 1rem;
+        line-height: 1.5rem;
+
+        .ui-dark-mode & {
+            color: $white;
+        }
+
+        .ui-console-input-prefix {
+        }
+
+        .ui-console-input {
+            // Input container styling
+            flex-grow: 1;
+
+            &:focus,
+            &:focus-visible {
+                outline: none;
+                appearance: none;
+            }
+        }
+    }
+}
