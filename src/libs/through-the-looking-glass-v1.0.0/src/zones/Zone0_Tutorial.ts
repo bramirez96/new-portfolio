@@ -1,39 +1,113 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import { ZoneDefinition } from "../classes/Zone";
+import { tag } from "../gameHelpers";
+
+/* Room ID Constants */
+
+const APT_BED = "AptBed";
+const APT_LR = "AptLR";
+const APT_KIT = "AptKit";
+const APT_BATH = "AptBath";
+
+/* End of Room ID Constants */
+
+/** Zone Conditions */
+
+const TAPPING = "tapping";
+
+/** End of Zone Conditions */
 
 export default {
+    // prettier-ignore
     map: [
-        ["AptKit", "AptLR", "AptBath"],
-        [null, "AptBed", null],
+        [APT_KIT,   APT_LR,     APT_BATH],
+        [null,      APT_BED,    null],
     ],
+    startingRoom: APT_BED,
+    conditions: {
+        // Initialize the Zone with a "mysterious tapping sound" condition.
+        [TAPPING]: true,
+    },
     rooms: {
-        AptBed: {
-            onEnter:
-                "You wake up to a loud blaring sound, just like any\n" +
-                "other day. Reaching over, you turn off your alarm,\n" +
-                "and are plunged into a comforting silence.\n\n" +
-                "Rubbing the sleep from your eyes, you look around\n" +
-                "the dark room before you. The curtains on the window\n" +
-                "are drawn tight, preventing any sunlight from entering.\n" +
-                "In one corner you can just about make out a pile of\n" +
-                "laundry on the floor.\n" +
-                "\n" +
-                "You welcome the darkness.\n" +
-                "\n" +
-                "Somewhere nearby, you can hear a faint but steady tapping.\n" +
-                "You live alone. You listen harder and the tapping ceases.",
+        [APT_BED]: {
+            /**
+             * This Room has different entry text based on the state of the game.
+             * Since this is the starting Room, we're adding some more context and
+             * flavor text to get the Player into the game.
+             */
+            onEnter: (room, { zone }) => {
+                let onEnterText = "";
+
+                if (!room.isVisited) {
+                    // Intro text on first visit
+                    onEnterText +=
+                        "You wake up to a loud blaring sound, just like any " +
+                        "other day. Reaching over, you turn off your alarm, " +
+                        "and are plunged into a comforting silence." +
+                        "\n" +
+                        "Rubbing the sleep from your eyes, you look around " +
+                        "the dark room before you.";
+                } else {
+                    onEnterText += "You're in your bedroom.";
+                }
+
+                onEnterText +=
+                    " The curtains on the window " +
+                    "are drawn tight, preventing any sunlight from entering. " +
+                    "In one corner you can just about make out a pile of " +
+                    "laundry on the floor.";
+
+                // Additional flavor text on the first entry, just for fun.
+                if (!room.isVisited) {
+                    onEnterText += "\nYou welcome the darkness.";
+                }
+
+                // We don't want this text to show after the "tapping" stops!
+                if (zone.hasCondition(TAPPING)) {
+                    onEnterText +=
+                        "\nSomewhere nearby, you can hear a faint but steady tapping. " +
+                        "You live alone. You listen harder and the tapping ceases.";
+                }
+
+                return onEnterText;
+            },
+            exits: [
+                {
+                    id: APT_LR,
+                    displayText: `To the ${tag("north")} is your living room.`,
+                },
+            ],
             features: [],
         },
-        AptLR: {
-            onEnter:
-                "You're standing in your living room. Last night's dinner sits\n" +
-                "on the coffee table, unfinished. You hear the strange tapping\n" +
-                "sound again, slightly louder than when you woke.\n" +
-                "\n" +
-                "Is it coming from inside your apartment?",
+        [APT_LR]: {
+            onEnter: (_, { zone }) => {
+                let onEnterText =
+                    "You're standing in your living room. Last night's dinner sits " +
+                    "on the coffee table, unfinished.";
+
+                if (zone.hasCondition(TAPPING)) {
+                    onEnterText +=
+                        " You hear the strange tapping sound again, slightly louder " +
+                        "than when you woke." +
+                        "\n" +
+                        "Is it coming from inside your apartment?";
+                }
+
+                return onEnterText;
+            },
+            exits: [
+                {
+                    id: APT_BED,
+                    displayText:
+                        "To the >south< is your bedroom. You'd love to curl " +
+                        "back up in bed right now",
+                },
+                { direction: "west", id: APT_KIT },
+                { direction: "east", id: APT_BATH },
+            ],
         },
-        AptKit: {
+        [APT_KIT]: {
             onEnter:
                 "You look around. The sink is full of dishes. How long\n" +
                 "has it been since you've cleaned up? There's no way to\n" +
@@ -43,8 +117,9 @@ export default {
                 "more distant than it did in the living room.\n" +
                 "\n" +
                 "Maybe you're just hearing things...",
+            exits: [],
         },
-        AptBath: {
+        [APT_BATH]: {
             onEnter:
                 "You look around. It's a fairly standard bathroom with a\n" +
                 "sink, toilet, and a shower. The waste bin is overflowing,\n" +
@@ -56,6 +131,7 @@ export default {
                 "someone is tapping against your glass.\n" +
                 "\n" +
                 "What on Earth is that sound?? All at once it stops.",
+            exits: [],
         },
     },
 } as ZoneDefinition;

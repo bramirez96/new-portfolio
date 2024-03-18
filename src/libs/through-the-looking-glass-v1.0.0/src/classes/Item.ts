@@ -2,4 +2,8 @@
 
 export default class Item {}
 
-export type ItemDefinition = {};
+export type ItemDefinition = {
+    type: ItemType;
+};
+
+export type ItemType = string;
