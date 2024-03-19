@@ -10,9 +10,5 @@
  * and Feature classes onto this GameController class, in an attempt at utilizing OOP
  * best practices, as the current Python version has some glaring issues built into
  * its core as a result of the original article I followed for the architecture.
- *
- * TODO we need to export a singleton from this module, not a class. The singleton needs
- *  to be globally-accessible from every class in the game, providing a way to read game
- *  state from all the various levels without passing containers around so much.
  */
 export default class GameController {}
