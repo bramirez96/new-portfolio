@@ -15,4 +15,8 @@ export type GameCallbackState = {
     player: Player;
 };
 
+/**
+ * Conditions should be tracked by creating string constants for reference keys
+ * and mapping them to boolean values indicating the state of the condition.
+ */
 export type ConditionMap = Record<string, boolean>;
