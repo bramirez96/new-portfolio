@@ -1,7 +1,7 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import { ZoneDefinition } from "../classes/Zone";
-import { tag } from "../gameHelpers";
+import { tagged } from "../gameHelpers";
 import { PLAYER_CONDITIONS } from "../classes/Player";
 
 /* Room ID Constants */
@@ -17,10 +17,12 @@ const OUTSIDE = "Outside";
 /** Zone Conditions */
 
 const TAPPING = "tapping";
+const EMPTY_MIRROR = "emptyMirror";
 
 /** End of Zone Conditions */
 
 export default {
+    // Allow custom matrix alignment by disabling formatting on the map object
     // prettier-ignore
     map: [
         [null,      OUTSIDE,    null],
@@ -31,6 +33,8 @@ export default {
     conditions: {
         // Initialize the Zone with a "mysterious tapping sound" condition.
         [TAPPING]: true,
+        // Initialize the Zone without the "empty mirror" condition
+        [EMPTY_MIRROR]: false,
     },
     rooms: {
         [APT_BED]: {
@@ -86,13 +90,13 @@ export default {
             exits: [
                 {
                     id: APT_LR,
-                    displayText: `To the ${tag("north")} is your living room.`,
+                    displayText: tagged`To the ${"north"} is your living room.`,
                 },
             ],
             features: [],
         },
         [APT_LR]: {
-            onEnter: (_, { zone }) => {
+            onEnter: (_room, { zone }) => {
                 let onEnterText =
                     "You're standing in your living room. Last night's dinner sits " +
                     "on the coffee table, unfinished.";
@@ -110,46 +114,125 @@ export default {
             exits: [
                 {
                     id: APT_BED,
-                    displayText:
-                        `To the ${tag("south")} is your bedroom. ` +
-                        "You'd love to curl back up in bed right now",
+                    displayText: tagged`To the ${"south"} is your bedroom. You'd love to curl back up in bed right now`,
                 },
                 {
                     id: OUTSIDE,
-                    displayText: `To the ${tag("north")} is the door of your apartment.`,
+                    displayText: tagged`To the ${"north"} is the door of your apartment.`,
                     // This exit is blocked so long as the player is still agoraphobic
-                    blocked: (current, target, exit, { player }) =>
-                        player.hasCondition(PLAYER_CONDITIONS.AGORAPHOBIC),
+                    blocked: (_exit, { player }) => {
+                        return player.hasCondition(PLAYER_CONDITIONS.AGORAPHOBIC);
+                    },
                 },
-                { direction: "west", id: APT_KIT },
-                { direction: "east", id: APT_BATH },
+                {
+                    id: APT_KIT,
+                    displayText: (exit) => {
+                        let exitText = tagged`To the ${"west"} is your kitchen.`;
+
+                        // Flavor text for the first time you're in the living room.
+                        if (!exit.currentRoom.isVisited) {
+                            exitText +=
+                                " When was the last time you ate? The days are starting to blur together.";
+                        }
+
+                        return exitText;
+                    },
+                },
+                {
+                    id: APT_BATH,
+                    displayText: (_exit, { zone }) => {
+                        let exitText = tagged`To the ${"east"} is your bathroom.`;
+
+                        // Flavor text that changes based on Zone state.
+                        if (zone.hasCondition(EMPTY_MIRROR)) {
+                            // TODO text update maybe?
+                            exitText += " You shudder.";
+                        } else if (!zone.hasCondition(TAPPING)) {
+                            exitText += " What just happened?";
+                        }
+
+                        return exitText;
+                    },
+                },
             ],
         },
         [APT_KIT]: {
-            onEnter:
-                "You look around. The sink is full of dishes. How long\n" +
-                "has it been since you've cleaned up? There's no way to\n" +
-                "know for sure.\n" +
-                "\n" +
-                "You pause to listen as the tapping starts again. It sounds\n" +
-                "more distant than it did in the living room.\n" +
-                "\n" +
-                "Maybe you're just hearing things...",
-            exits: [],
+            onEnter: (_room, { zone }) => {
+                let onEnterText =
+                    "You look around. The sink is full of dishes. How long " +
+                    "has it been since you've cleaned up? There's no way to " +
+                    "know for sure.";
+
+                if (zone.hasCondition(TAPPING)) {
+                    onEnterText +=
+                        "\n" +
+                        "You pause momentarily, listening closely as the tapping starts again. " +
+                        "It sounds more distant than it did in the living room." +
+                        "\n" +
+                        "Maybe you're just hearing things...";
+                }
+
+                return onEnterText;
+            },
+            exits: [
+                {
+                    id: APT_LR,
+                    displayText: tagged`To the ${"east"} is your living room.`,
+                },
+            ],
         },
         [APT_BATH]: {
-            onEnter:
-                "You look around. It's a fairly standard bathroom with a\n" +
-                "sink, toilet, and a shower. The waste bin is overflowing,\n" +
-                "and the hamper in the corner is nearly full as well.\n" +
-                "\n" +
-                "You stop and listen as you hear the tapping again, this\n" +
-                "time louder than ever. You know it's nearby. You can't\n" +
-                "shake the eerie feeling that you're in a fish tank, and\n" +
-                "someone is tapping against your glass.\n" +
-                "\n" +
-                "What on Earth is that sound?? All at once it stops.",
-            exits: [],
+            onEnter: (_room, { zone }) => {
+                let onEnterText = "";
+
+                if (zone.hasCondition(EMPTY_MIRROR)) {
+                    // After the second mirror interaction, the mirror is empty, changing the flavor text
+                    onEnterText =
+                        "Momentarily frozen in shock, you consider what just happened." +
+                        "\n" +
+                        "Where your apartment once felt safe, you now feel as though you are under attack by " +
+                        "something dark and sinister. Reflections don't just run away... they can't! Right?" +
+                        "\n" +
+                        "Thinking back a few years, you try and remember what the hallucinations felt like. " +
+                        "They felt real enough at the time, but never as real as this. This was new." +
+                        "\n" +
+                        "You feel your heart pounding in your head.";
+                } else if (zone.hasCondition(TAPPING)) {
+                    // Before the first mirror interaction, the tapping sound is still occurring
+                    onEnterText =
+                        "You look around. It's a fairly standard bathroom with a " +
+                        "sink, toilet, and a shower. The waste bin is overflowing, " +
+                        "and the hamper in the corner is nearly full as well." +
+                        "\n" +
+                        "You stop and listen as you hear the tapping again, this " +
+                        "time louder than ever. You know it's nearby. You can't " +
+                        "shake the eerie feeling that you're in a fish tank, and " +
+                        "someone is tapping against your glass." +
+                        "\n" +
+                        "What on Earth is that sound? All at once it stops.";
+                } else {
+                    // Between the first and second mirror interactions, no tapping but the mirror isn't empty
+                    onEnterText =
+                        "Standing in the bathroom, you ponder what you saw in the mirror." +
+                        "\n" +
+                        "It's impossible to see your reflection blink, right? Some part of you wants to " +
+                        "look again but the fear you feel is almost tangible." +
+                        "\n" +
+                        "As you sit, attempting to rationalize what you've just seen, the tapping begins " +
+                        "again - slowly at first, but building rapidly, until it becomes a ferocious pounding." +
+                        "\n" +
+                        "Your heart races as you contemplate your next move.";
+                }
+
+                return onEnterText;
+            },
+            // TODO we need to print something like "the tapping starts again" when you first exit the bathroom
+            exits: [
+                {
+                    id: APT_LR,
+                    displayText: tagged`To the ${"west"} is your living room.`,
+                },
+            ],
         },
     },
 } as ZoneDefinition;
