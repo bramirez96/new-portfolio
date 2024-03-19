@@ -1,9 +1,16 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { RoomID } from "./Room";
+import Room, { RoomID } from "./Room";
+import { GameCallbackState } from "./gameTypes";
 
 export default class Exit {}
 
+export type ExitCallback<ReturnType> = (
+    currentRoom: Room,
+    targetRoom: Room,
+    exit: Exit,
+    gameState: GameCallbackState
+) => ReturnType;
 export type ExitDefinition = {
     /**
      * The ID of the Room that the Exit leads to.
@@ -23,7 +30,7 @@ export type ExitDefinition = {
      * unblock the Exit here. At time of writing, the current idea is that this
      * means "blocked from the other side", but let's see where it goes!
      */
-    blocked?: boolean;
+    blocked?: boolean | ExitCallback<boolean>;
 
     /**
      * If true, the Exit door is locked. All locked doors should be able to be

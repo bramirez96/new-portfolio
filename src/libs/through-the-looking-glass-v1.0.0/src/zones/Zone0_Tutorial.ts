@@ -2,6 +2,7 @@
 
 import { ZoneDefinition } from "../classes/Zone";
 import { tag } from "../gameHelpers";
+import { PLAYER_CONDITIONS } from "../classes/Player";
 
 /* Room ID Constants */
 
@@ -9,6 +10,7 @@ const APT_BED = "AptBed";
 const APT_LR = "AptLR";
 const APT_KIT = "AptKit";
 const APT_BATH = "AptBath";
+const OUTSIDE = "Outside";
 
 /* End of Room ID Constants */
 
@@ -21,6 +23,7 @@ const TAPPING = "tapping";
 export default {
     // prettier-ignore
     map: [
+        [null,      OUTSIDE,    null],
         [APT_KIT,   APT_LR,     APT_BATH],
         [null,      APT_BED,    null],
     ],
@@ -65,8 +68,16 @@ export default {
 
                 // We don't want this text to show after the "tapping" stops!
                 if (zone.hasCondition(TAPPING)) {
+                    onEnterText += "\n";
+
+                    // TODO is this text cringe? Need to decide
+                    if (!room.isVisited) {
+                        onEnterText +=
+                            "As with all good things, the peaceful silence was short-lived. ";
+                    }
+
                     onEnterText +=
-                        "\nSomewhere nearby, you can hear a faint but steady tapping. " +
+                        "Somewhere nearby, you can hear a faint but steady tapping. " +
                         "You live alone. You listen harder and the tapping ceases.";
                 }
 
@@ -100,8 +111,15 @@ export default {
                 {
                     id: APT_BED,
                     displayText:
-                        "To the >south< is your bedroom. You'd love to curl " +
-                        "back up in bed right now",
+                        `To the ${tag("south")} is your bedroom. ` +
+                        "You'd love to curl back up in bed right now",
+                },
+                {
+                    id: OUTSIDE,
+                    displayText: `To the ${tag("north")} is the door of your apartment.`,
+                    // This exit is blocked so long as the player is still agoraphobic
+                    blocked: (current, target, exit, { player }) =>
+                        player.hasCondition(PLAYER_CONDITIONS.AGORAPHOBIC),
                 },
                 { direction: "west", id: APT_KIT },
                 { direction: "east", id: APT_BATH },

@@ -18,11 +18,7 @@ import { ConditionMap } from "./gameTypes";
  * - second, the player's save data (not yet implemented)
  */
 export default class Zone {
-    private readonly conditions: ConditionMap;
-
-    constructor() {
-        this.conditions = {};
-    }
+    private readonly conditions: ConditionMap = {};
 
     hasCondition(condition: string): boolean {
         return this.conditions[condition] ?? false;
