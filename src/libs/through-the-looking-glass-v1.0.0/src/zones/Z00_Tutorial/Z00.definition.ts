@@ -1,23 +1,22 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { ZoneDefinition } from "../classes/Zone";
-import { tagged } from "../gameHelpers";
-import { PLAYER_CONDITIONS } from "../classes/Player";
+import { PLAYER_CONDITIONS, ZoneDefinition } from "../../classes";
+import { tagged } from "../../gameHelpers";
 
 /* Room ID Constants */
 
-const APT_BED = "AptBed";
-const APT_LR = "AptLR";
-const APT_KIT = "AptKit";
-const APT_BATH = "AptBath";
-const OUTSIDE = "Outside";
+const Z00_APT_BED = "AptBed";
+const Z00_APT_LR = "AptLR";
+const Z00_APT_KIT = "AptKit";
+const Z00_APT_BATH = "AptBath";
+const Z00_OUTSIDE = "Outside";
 
 /* End of Room ID Constants */
 
 /** Zone Conditions */
 
-const TAPPING = "tapping";
-const EMPTY_MIRROR = "emptyMirror";
+const Z00_TAPPING = "tapping";
+const Z00_EMPTY_MIRROR = "emptyMirror";
 
 /** End of Zone Conditions */
 
@@ -25,19 +24,25 @@ export default {
     // Allow custom matrix alignment by disabling formatting on the map object
     // prettier-ignore
     map: [
-        [null,      OUTSIDE,    null],
-        [APT_KIT,   APT_LR,     APT_BATH],
-        [null,      APT_BED,    null],
+        [null,         Z00_OUTSIDE,  null        ],
+        [Z00_APT_KIT,  Z00_APT_LR,   Z00_APT_BATH],
+        [null,         Z00_APT_BED,  null        ],
     ],
-    startingRoom: APT_BED,
+    startingRoom: Z00_APT_BED,
     conditions: {
         // Initialize the Zone with a "mysterious tapping sound" condition.
-        [TAPPING]: true,
+        [Z00_TAPPING]: true,
         // Initialize the Zone without the "empty mirror" condition
-        [EMPTY_MIRROR]: false,
+        [Z00_EMPTY_MIRROR]: false,
     },
     rooms: {
-        [APT_BED]: {
+        // TODO define what happens once you're able to go "Outside" (it's indefinitely blocked)
+        [Z00_OUTSIDE]: {
+            onEnter: "You are outside.",
+            // Don't need exits, game should end on enter
+            exits: [],
+        },
+        [Z00_APT_BED]: {
             /**
              * This Room has different entry text based on the state of the game.
              * Since this is the starting Room, we're adding some more context and
@@ -71,7 +76,7 @@ export default {
                 }
 
                 // We don't want this text to show after the "tapping" stops!
-                if (zone.hasCondition(TAPPING)) {
+                if (zone.hasCondition(Z00_TAPPING)) {
                     onEnterText += "\n";
 
                     // TODO is this text cringe? Need to decide
@@ -89,19 +94,19 @@ export default {
             },
             exits: [
                 {
-                    id: APT_LR,
+                    id: Z00_APT_LR,
                     displayText: tagged`To the ${"north"} is your living room.`,
                 },
             ],
             features: [],
         },
-        [APT_LR]: {
+        [Z00_APT_LR]: {
             onEnter: (_room, { zone }) => {
                 let onEnterText =
                     "You're standing in your living room. Last night's dinner sits " +
                     "on the coffee table, unfinished.";
 
-                if (zone.hasCondition(TAPPING)) {
+                if (zone.hasCondition(Z00_TAPPING)) {
                     onEnterText +=
                         " You hear the strange tapping sound again, slightly louder " +
                         "than when you woke." +
@@ -113,11 +118,11 @@ export default {
             },
             exits: [
                 {
-                    id: APT_BED,
+                    id: Z00_APT_BED,
                     displayText: tagged`To the ${"south"} is your bedroom. You'd love to curl back up in bed right now`,
                 },
                 {
-                    id: OUTSIDE,
+                    id: Z00_OUTSIDE,
                     displayText: tagged`To the ${"north"} is the door of your apartment.`,
                     // This exit is blocked so long as the player is still agoraphobic
                     blocked: (_exit, { player }) => {
@@ -125,7 +130,7 @@ export default {
                     },
                 },
                 {
-                    id: APT_KIT,
+                    id: Z00_APT_KIT,
                     displayText: (exit) => {
                         let exitText = tagged`To the ${"west"} is your kitchen.`;
 
@@ -139,15 +144,15 @@ export default {
                     },
                 },
                 {
-                    id: APT_BATH,
+                    id: Z00_APT_BATH,
                     displayText: (_exit, { zone }) => {
                         let exitText = tagged`To the ${"east"} is your bathroom.`;
 
                         // Flavor text that changes based on Zone state.
-                        if (zone.hasCondition(EMPTY_MIRROR)) {
+                        if (zone.hasCondition(Z00_EMPTY_MIRROR)) {
                             // TODO text update maybe?
                             exitText += " You shudder.";
-                        } else if (!zone.hasCondition(TAPPING)) {
+                        } else if (!zone.hasCondition(Z00_TAPPING)) {
                             exitText += " What just happened?";
                         }
 
@@ -156,14 +161,14 @@ export default {
                 },
             ],
         },
-        [APT_KIT]: {
+        [Z00_APT_KIT]: {
             onEnter: (_room, { zone }) => {
                 let onEnterText =
                     "You look around. The sink is full of dishes. How long " +
                     "has it been since you've cleaned up? There's no way to " +
                     "know for sure.";
 
-                if (zone.hasCondition(TAPPING)) {
+                if (zone.hasCondition(Z00_TAPPING)) {
                     onEnterText +=
                         "\n" +
                         "You pause momentarily, listening closely as the tapping starts again. " +
@@ -176,16 +181,16 @@ export default {
             },
             exits: [
                 {
-                    id: APT_LR,
+                    id: Z00_APT_LR,
                     displayText: tagged`To the ${"east"} is your living room.`,
                 },
             ],
         },
-        [APT_BATH]: {
+        [Z00_APT_BATH]: {
             onEnter: (_room, { zone }) => {
                 let onEnterText = "";
 
-                if (zone.hasCondition(EMPTY_MIRROR)) {
+                if (zone.hasCondition(Z00_EMPTY_MIRROR)) {
                     // After the second mirror interaction, the mirror is empty, changing the flavor text
                     onEnterText =
                         "Momentarily frozen in shock, you consider what just happened." +
@@ -197,7 +202,7 @@ export default {
                         "They felt real enough at the time, but never as real as this. This was new." +
                         "\n" +
                         "You feel your heart pounding in your head.";
-                } else if (zone.hasCondition(TAPPING)) {
+                } else if (zone.hasCondition(Z00_TAPPING)) {
                     // Before the first mirror interaction, the tapping sound is still occurring
                     onEnterText =
                         "You look around. It's a fairly standard bathroom with a " +
@@ -229,7 +234,7 @@ export default {
             // TODO we need to print something like "the tapping starts again" when you first exit the bathroom
             exits: [
                 {
-                    id: APT_LR,
+                    id: Z00_APT_LR,
                     displayText: tagged`To the ${"west"} is your living room.`,
                 },
             ],
