@@ -12,7 +12,11 @@ export default function LookingGlassContainer(props: LookingGlassProps) {
     return (
         <HomeTemplate>
             <div className={classnames("ui-looking-glass-wrapper")}>
-                <Console />
+                <Console
+                    onInputSubmit={(text) => {
+                        alert(`Submitted: ${text}`);
+                    }}
+                />
             </div>
         </HomeTemplate>
     );
