@@ -1,5 +1,7 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { HTMLProps } from 'react';
+import { HTMLProps, ReactNode } from "react";
 
-export type HomeTemplateProps = HTMLProps<HTMLDivElement> & {};
+export type HomeTemplateProps = HTMLProps<HTMLDivElement> & {
+    children?: ReactNode;
+};
