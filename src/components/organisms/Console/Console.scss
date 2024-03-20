@@ -17,7 +17,14 @@
     border: 1px solid $black;
     border-radius: $bui-border-radius;
 
+    // Font styling
+    color: $black;
+    font-family: monospace;
+    font-size: 1rem;
+    line-height: 1.5rem;
+
     .ui-dark-mode & {
+        color: $white;
         background-color: $black;
         border-color: $white;
     }
@@ -31,16 +38,6 @@
         display: flex;
         flex-flow: row nowrap;
         align-items: flex-start;
-
-        // Input font styling
-        color: $black;
-        font-family: monospace;
-        font-size: 1rem;
-        line-height: 1.5rem;
-
-        .ui-dark-mode & {
-            color: $white;
-        }
 
         .ui-console-input-prefix {
         }
