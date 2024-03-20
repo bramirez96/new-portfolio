@@ -31,7 +31,7 @@ export default class GameController {
      *
      * TODO this needs a lot of changes
      */
-    constructor({ _zone = 0, _room }: { _zone: ZoneID; _room: RoomID }) {
+    constructor({ _zone = 0, _room }: { _zone?: ZoneID; _room?: RoomID } = {}) {
         this.currentZone = _zone;
         this.currentRoom = _room;
 
