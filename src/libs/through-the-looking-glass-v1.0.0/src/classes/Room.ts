@@ -2,7 +2,7 @@
 
 import { FeatureDefinition } from "./Feature";
 import { ItemDefinition } from "./Item";
-import { GameCallbackState } from "./gameTypes";
+import { GameCallbackState } from "../gameTypes";
 import { ExitDefinition } from "./Exit";
 
 /**
@@ -24,10 +24,7 @@ export default class Room {
 }
 
 export type RoomID = string;
-export type RoomCallback<ReturnType> = (
-    room: Room,
-    gameState: GameCallbackState
-) => ReturnType;
+export type RoomCallback<ReturnType> = (room: Room, gameState: GameCallbackState) => ReturnType;
 
 export type RoomDefinition = {
     /**

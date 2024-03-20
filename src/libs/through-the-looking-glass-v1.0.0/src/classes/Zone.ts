@@ -1,7 +1,7 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import { RoomDefinition, RoomID } from "./Room";
-import { ConditionMap } from "./gameTypes";
+import { ConditionMap } from "../gameTypes";
 
 /**
  * The Zone class contains a fully-loaded section of the game world. It should

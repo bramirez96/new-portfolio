@@ -1,8 +1,8 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import GameController from "../GameController";
-import Player from "./Player";
-import Zone from "./Zone";
+import GameController from "./GameController";
+import Player from "./classes/Player";
+import Zone from "./classes/Zone";
 
 /**
  * Every callback, no matter what it relates to, could possibly require access

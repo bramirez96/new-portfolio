@@ -1,6 +1,6 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { GameCallbackState } from "./gameTypes";
+import { GameCallbackState } from "../gameTypes";
 import Room from "./Room";
 
 export default class Feature {}

@@ -1,7 +1,7 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import Room, { RoomID } from "./Room";
-import { GameCallbackState } from "./gameTypes";
+import { GameCallbackState } from "../gameTypes";
 import GameController from "../GameController";
 import Player from "./Player";
 import Zone from "./Zone";

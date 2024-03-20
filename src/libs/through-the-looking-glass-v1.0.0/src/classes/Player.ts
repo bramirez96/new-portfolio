@@ -1,6 +1,6 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { ConditionMap } from "./gameTypes";
+import { ConditionMap } from "../gameTypes";
 
 export const PLAYER_CONDITIONS = {
     AGORAPHOBIC: "agoraphobic",
