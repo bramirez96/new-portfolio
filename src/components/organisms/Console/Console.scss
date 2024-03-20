@@ -4,7 +4,13 @@
 
 .ui-console {
     // Container layout
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    gap: 0;
+
     padding: 1rem;
+    overflow-y: auto;
 
     // Container styling
     background-color: $white;
@@ -14,6 +20,10 @@
     .ui-dark-mode & {
         background-color: $black;
         border-color: $white;
+    }
+
+    .ui-console-output {
+        //flex-grow: 1;
     }
 
     .ui-console-input-wrapper {
