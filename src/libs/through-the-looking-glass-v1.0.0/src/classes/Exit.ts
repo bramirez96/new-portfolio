@@ -2,9 +2,6 @@
 
 import Room, { RoomID } from "./Room";
 import { GameCallbackState } from "../gameTypes";
-import GameController from "../GameController";
-import Player from "./Player";
-import Zone from "./Zone";
 
 // TODO this class is a mess, clean it up
 export default class Exit {
@@ -32,23 +29,23 @@ export default class Exit {
         this.blocked = typeof blocked !== "function" ? () => blocked : blocked;
     }
 
-    get isBlocked() {
-        // TODO read these from existing state somewhere instead of creating new ones
-        return this.blocked(this, {
-            game: new GameController(),
-            player: new Player(),
-            zone: new Zone(),
-        });
-    }
-
-    get isLocked() {
-        // TODO read these from existing state somewhere instead of creating new ones
-        return this.locked(this, {
-            game: new GameController(),
-            player: new Player(),
-            zone: new Zone(),
-        });
-    }
+    // get isBlocked() {
+    //     // TODO read these from existing state somewhere instead of creating new ones
+    //     return this.blocked(this, {
+    //         game: new GameController(),
+    //         player: new Player(),
+    //         zone: new Zone(),
+    //     });
+    // }
+    //
+    // get isLocked() {
+    //     // TODO read these from existing state somewhere instead of creating new ones
+    //     return this.locked(this, {
+    //         game: new GameController(),
+    //         player: new Player(),
+    //         zone: new Zone(),
+    //     });
+    // }
 }
 
 export type ExitCallback<ReturnType> = (exit: Exit, gameState: GameCallbackState) => ReturnType;
