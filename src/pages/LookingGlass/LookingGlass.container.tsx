@@ -23,10 +23,7 @@ export default function LookingGlassContainer(props: LookingGlassProps) {
 
     // Once the console controller is built, we can then build the GameController
     useEffect(() => {
-        // // !TEST - OMG IT WORKS
         if (consoleController) {
-            // consoleController.updatePrefix(<>TEST PREFIX {">>"}&nbsp;</>);
-            // consoleController.clearOutput();
         }
     }, [consoleController]);
 

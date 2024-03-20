@@ -12,10 +12,7 @@ export default function ConsoleContainer({
     const [inputPrefix, setInputPrefix] = useState<undefined | ReactNode>();
 
     /* Console Output Handlers */
-    const [consoleOutput, setConsoleOutput] = useState<undefined | ReactNode[]>([
-        <div>TEST 1</div>,
-        <div>TEST 2</div>,
-    ]);
+    const [consoleOutput, setConsoleOutput] = useState<undefined | ReactNode[]>();
 
     useEffect(() => {
         // Build the console controller on mount, if passed
