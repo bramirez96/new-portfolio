@@ -21,7 +21,11 @@ export default function ConsoleContainer({
             setInputPrefix,
             appendConsoleOutput: (newOutput) => {
                 if (newOutput) {
-                    setConsoleOutput((prevOutput = []) => [...prevOutput, ...newOutput]);
+                    setConsoleOutput((prevOutput = []) => {
+                        return prevOutput.length > 0
+                            ? [...prevOutput, <br />, ...newOutput]
+                            : newOutput;
+                    });
                 }
             },
         });
