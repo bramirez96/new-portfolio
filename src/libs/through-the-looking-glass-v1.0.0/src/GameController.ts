@@ -1,8 +1,8 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { Player, RoomID } from "./classes";
-import loadZone from "./loadZone";
-import { ZoneID } from "../../through-the-looking-glass-v0.1.0/src/GameController";
+import { ConsoleController } from "../../../utils";
+import { ReactNode } from "react";
+import { GameDiscDefinition } from "./gameTypes";
 
 /**
  * This class should handle everything. It should build maps from JSON and store the
@@ -15,34 +15,26 @@ import { ZoneID } from "../../through-the-looking-glass-v0.1.0/src/GameControlle
  * best practices, as the current Python version has some glaring issues built into
  * its core as a result of the original article I followed for the architecture.
  */
-export default class GameController {
-    public player?: Player;
+export default class GameController<IOType = ReactNode> {
+    public console: ConsoleController<IOType>;
 
-    // TODO figure out the best way to store these
-    private currentZone: ZoneID;
-    private currentRoom?: RoomID;
+    constructor({ console }: { console: ConsoleController<IOType> }) {
+        this.console = console;
+    }
 
     /**
-     * This constructor has a lot of heavy lifting to do. Something like this:
-     * - First, load any save data we can find --> TODO
-     * - Then, load the proper Zone data (use Zone from save data, default to tutorial)
-     * - Build the Player class with the save data, applying defaults from the Zone definition
-     * - Build each Room in the Zone with the save data, applying defaults from Zone definition
-     *
-     * TODO this needs a lot of changes
+     * Process raw user input strings from the console into game commands.
      */
-    constructor({ _zone = 0, _room }: { _zone?: ZoneID; _room?: RoomID } = {}) {
-        this.currentZone = _zone;
-        this.currentRoom = _room;
-
-        this.init();
+    handleInput(input?: IOType) {
+        if (input) {
+            // TODO build proper input handling
+            this.console.appendOutput([input]);
+        }
     }
 
-    init() {
-        // Lazy load our Zone data
-        loadZone(this.currentZone).then((_zoneDef) => {
-            // Default to the Zone starting room if unset
-            this.currentRoom ??= _zoneDef.startingRoom;
-        });
-    }
+    /**
+     * This is going to do a lot of heavy lifting! Load the game disc, optionally
+     * including save data to persist the player's progress.
+     */
+    async loadGame(disc: GameDiscDefinition, saveData?: unknown) {}
 }
