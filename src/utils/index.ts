@@ -9,3 +9,4 @@ export * from "./DarkModeContext";
 export { default as KeyEventHelpers } from "./KeyEventHelpers";
 export { default as ConsoleController } from "./ConsoleController";
 export * from "./ConsoleController";
+export { default as useGameController } from "./useGameController";
