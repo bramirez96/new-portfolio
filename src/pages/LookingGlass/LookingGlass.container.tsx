@@ -2,44 +2,28 @@
 
 import { HomeTemplate } from "../../components/templates";
 import { Console } from "../../components/organisms";
-import { classnames } from "../../libs";
+import { classnames, ThroughTheLookingGlass } from "../../libs";
+import { useGameController } from "../../utils";
+import { useEffect } from "react";
 
 import "./LookingGlass.scss";
-import { ConsoleController } from "../../utils";
-import { ReactNode, useCallback, useEffect, useState } from "react";
 
 export interface LookingGlassProps {}
 
-export default function LookingGlassContainer(props: LookingGlassProps) {
-    const [consoleController, setConsoleController] = useState<ConsoleController<ReactNode>>();
+export default function LookingGlassContainer(_props: LookingGlassProps) {
+    const [gameController, consoleProps] = useGameController(ThroughTheLookingGlass);
 
-    // Create a callback to build the ConsoleController and save it in state
-    const buildConsoleController = useCallback(
-        (params: ConstructorParameters<typeof ConsoleController<ReactNode>>[0]) => {
-            setConsoleController(new ConsoleController(params));
-        },
-        []
-    );
-
-    // Once the console controller is built, we can then build the GameController
+    // Once the game controller is built...
     useEffect(() => {
-        if (consoleController) {
-            // TODO build the GameController
+        if (gameController) {
+            // TODO load the game controller
         }
-    }, [consoleController]);
-
-    const onInputSubmit = useCallback((text?: string) => {
-        // TODO replace the alert with a call to the GameController's input processor
-        alert(`Submitted: ${text}`);
-    }, []);
+    }, [gameController]);
 
     return (
         <HomeTemplate>
             <div className={classnames("ui-looking-glass-wrapper")}>
-                <Console
-                    onInputSubmit={onInputSubmit}
-                    buildConsoleController={buildConsoleController}
-                />
+                <Console {...consoleProps} />
             </div>
         </HomeTemplate>
     );
