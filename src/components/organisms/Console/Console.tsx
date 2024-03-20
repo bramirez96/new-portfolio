@@ -5,7 +5,13 @@ import { KeyboardEventHandler, MouseEventHandler, useCallback, useRef } from "re
 import { ConsoleProps } from "./Console.types";
 import { KeyEventHelpers } from "../../../utils";
 
-export default function Console({ onInputSubmit }: ConsoleProps) {
+const DEFAULT_CONSOLE_INPUT_PREFIX = <>{">>"}&nbsp;</>;
+
+export default function Console({
+    onInputSubmit,
+    inputPrefix = DEFAULT_CONSOLE_INPUT_PREFIX,
+    consoleOutput = [],
+}: ConsoleProps) {
     const inputRef = useRef<HTMLDivElement>(null);
 
     // Focus the Console input element when any part of the console is clicked
@@ -36,9 +42,9 @@ export default function Console({ onInputSubmit }: ConsoleProps) {
 
     return (
         <div className="ui-console" onClick={onConsoleClick}>
-            <div className="ui-console-output"></div>
+            <div className="ui-console-output">{consoleOutput}</div>
             <div className="ui-console-input-wrapper">
-                <div className="ui-console-input-prefix">{">>"}&nbsp;</div>
+                <div className="ui-console-input-prefix">{inputPrefix}</div>
                 <div
                     ref={inputRef}
                     onKeyDown={onKeyDown}
