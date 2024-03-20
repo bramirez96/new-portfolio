@@ -23,6 +23,11 @@
     font-size: 1rem;
     line-height: 1.5rem;
 
+    // The app-wide default is to allow lowercase only
+    & * {
+        text-transform: none;
+    }
+
     .ui-dark-mode & {
         color: $white;
         background-color: $black;
