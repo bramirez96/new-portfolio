@@ -24,10 +24,10 @@ export default function Console({ onInputSubmit }: ConsoleProps) {
                 if (inputRef.current) {
                     // Run our passed-in submit handler!
                     const inputText = inputRef.current.innerText ?? "";
-                    onInputSubmit?.(inputText);
-
-                    // Clear the input text
-                    inputRef.current.innerText = "";
+                    if (onInputSubmit?.(inputText) !== false) {
+                        // Clear the input text
+                        inputRef.current.innerText = "";
+                    }
                 }
             }
         },
