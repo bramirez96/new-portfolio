@@ -24,16 +24,20 @@ export default function LookingGlassContainer(props: LookingGlassProps) {
     // Once the console controller is built, we can then build the GameController
     useEffect(() => {
         if (consoleController) {
+            // TODO build the GameController
         }
     }, [consoleController]);
+
+    const onInputSubmit = useCallback((text?: string) => {
+        // TODO replace the alert with a call to the GameController's input processor
+        alert(`Submitted: ${text}`);
+    }, []);
 
     return (
         <HomeTemplate>
             <div className={classnames("ui-looking-glass-wrapper")}>
                 <Console
-                    onInputSubmit={(text) => {
-                        alert(`Submitted: ${text}`);
-                    }}
+                    onInputSubmit={onInputSubmit}
                     buildConsoleController={buildConsoleController}
                 />
             </div>
