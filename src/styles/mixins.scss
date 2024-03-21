@@ -1,6 +1,6 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-@import './variables';
+@import "./variables";
 
 @mixin raised($level: 0, $shadow-color: $bui-shadow-color, $offset: 0.05rem) {
     @if $level == false {
@@ -46,10 +46,7 @@
 }
 
 /* !IMPORTANT: Don't forget to include "transform" in transition properties */
-@mixin pressable(
-    $growth-scale-factor: 0.005,
-    $shrink-scale-factor: $growth-scale-factor
-) {
+@mixin pressable($growth-scale-factor: 0.005, $shrink-scale-factor: $growth-scale-factor) {
     &:hover {
         transform: scale(1 + $growth-scale-factor);
     }
@@ -60,12 +57,11 @@
 }
 
 @mixin page-template() {
-    // Block styling for template, should fill the whole page
-    display: block;
+    display: flex;
+    flex-flow: column nowrap;
     min-height: 100vh;
     max-width: 100%;
     width: 100%;
-    padding-bottom: 2rem;
 }
 
 @mixin content-safe($width: 1000px, $min-padding: 1rem) {

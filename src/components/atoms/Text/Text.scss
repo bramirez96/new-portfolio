@@ -1,32 +1,40 @@
-// ! Copyright (c) 2024, Brandon Ramirez
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import "../../../styles/globals";
 
 // TODO update the fonts
 .ui-text {
-  font-family: sans-serif;
-  font-size: 1rem;
-  line-height: 1.25rem;
+    font-family: "Roboto Slab", serif;
+    font-size: 1rem;
+    line-height: 1.25rem;
 
-  &.type-secondary {
-    font-family: monospace;
-  }
+    color: $black;
 
-  &.size-x-small {
-    font-size: 0.75rem;
-    line-height: 1rem;
-  }
+    .ui-dark-mode & {
+        color: $white;
+    }
 
-  &.size-small {
-    font-size: 0.875rem;
-    line-height: 1.125rem;
-  }
+    &.type-secondary {
+        font-family: monospace;
+    }
 
-  &.size-large {
-    font-size: 1.25rem;
-    line-height: 1.5rem;
-  }
+    &.size-x-small {
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
 
-  &.size-x-large {
-    font-size: 1.5rem;
-    line-height: 1.75rem;
-  }
+    &.size-small {
+        font-size: 0.875rem;
+        line-height: 1.125rem;
+    }
+
+    &.size-large {
+        font-size: 1.25rem;
+        line-height: 1.5rem;
+    }
+
+    &.size-x-large {
+        font-size: 1.5rem;
+        line-height: 1.75rem;
+    }
 }

@@ -1,0 +1,35 @@
+// ! Copyright (c) 2024, Brandon Ramirez, brr.dev
+
+@import "../../styles/globals";
+
+.ui-looking-glass-page {
+    & > .ui-title-section {
+        @include content-safe();
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: stretch;
+        gap: 0.25rem;
+
+        .size-small {
+            font-weight: 100;
+        }
+    }
+
+    .ui-looking-glass-wrapper {
+        @include content-safe();
+        padding-bottom: 1rem;
+
+        flex-grow: 1;
+
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: stretch;
+
+        .ui-console {
+            flex: 1 0 6rem;
+        }
+    }
+}
