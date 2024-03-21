@@ -1,32 +1,39 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import Room, { RoomID } from "./Room";
-import { GameCallbackState } from "../gameTypes";
+import GameController from "../GameController";
+import { asFunction } from "../gameHelpers";
+import Key from "./Key";
 
 // TODO this class is a mess, clean it up
 export default class Exit {
-    public currentRoom: Room;
-    public targetRoom: Room;
+    public targetRoomID: RoomID;
+    public displayText: ExitCallback<string>;
+    public blocked: ExitCallback<boolean>;
+    public locked: ExitCallback<boolean>;
+    public onExit?: ExitCallback<void>;
 
-    private blocked: ExitCallback<boolean>;
-    private locked: ExitCallback<boolean>;
+    private readonly keyCode?: string;
 
+    /**
+     * Build an instance of the Exit class based on the given definition.
+     */
     constructor({
-        current,
-        target,
+        id,
+        displayText,
         locked = false,
         blocked = false,
-    }: {
-        current: Room;
-        target: Room;
-        blocked?: boolean | ExitCallback<boolean>;
-        locked?: boolean | ExitCallback<boolean>;
-    }) {
-        this.currentRoom = current;
-        this.targetRoom = target;
+        keyCode,
+        onExit,
+    }: ExitDefinition) {
+        this.targetRoomID = id;
+        this.keyCode = keyCode;
+        this.onExit = onExit;
 
-        this.locked = typeof locked !== "function" ? () => locked : locked;
-        this.blocked = typeof blocked !== "function" ? () => blocked : blocked;
+        // Convert these to functions on the class if they're passed as raw data
+        this.displayText = asFunction(displayText);
+        this.locked = asFunction(locked);
+        this.blocked = asFunction(blocked);
     }
 
     /**
@@ -37,7 +44,12 @@ export default class Exit {
     }
 }
 
-export type ExitCallback<ReturnType> = (exit: Exit, gameState: GameCallbackState) => ReturnType;
+export type ExitCallback<ReturnType> = (
+    exit: Exit,
+    currentRoom: Room,
+    targetRoom: Room,
+    game: GameController
+) => ReturnType;
 export type ExitDefinition = {
     /**
      * The ID of the Room that the Exit leads to.
@@ -64,7 +76,7 @@ export type ExitDefinition = {
      * unlocked with a Key, and as such all require the "keyCode" field as well
      * in order to properly function.
      */
-    locked?: boolean;
+    locked?: boolean | ExitCallback<boolean>;
 
     /**
      * If the Exit is locked, keyCode is required. This code should be unique
