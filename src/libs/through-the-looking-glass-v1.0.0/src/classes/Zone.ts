@@ -24,12 +24,12 @@ export default class Zone {
     /**
      * Build an instance of the Zone class based on the given definition.
      */
-    constructor(zoneDefinition: ZoneDefinition) {
+    constructor({ rooms, conditions }: ZoneDefinition) {
         // Store the conditions map directly, it's the same format.
-        this.conditions = zoneDefinition.conditions;
+        this.conditions = conditions;
 
         // Iterate over the rooms in the definition, build and store internally
-        for (const roomDefinition of zoneDefinition.rooms) {
+        for (const roomDefinition of rooms) {
             this.rooms[roomDefinition.id] = new Room(roomDefinition);
         }
     }
