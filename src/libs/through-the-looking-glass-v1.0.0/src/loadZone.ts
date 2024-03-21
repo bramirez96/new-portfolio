@@ -28,6 +28,6 @@ export default function loadZone(zoneID: ZoneID = 0): Promise<ZoneDefinition> {
         throw new Error(`Could not load Zone #${zoneID}. Missing definition.`);
     }
 
-    // Otherwise, return the definition (have to cast because of the dynamic import)
-    return ZONE_MAP[zoneID]() as unknown as Promise<ZoneDefinition>;
+    // Otherwise, return the definition (make sure we return the default export)
+    return ZONE_MAP[zoneID]().then((mod) => mod.default) as unknown as Promise<ZoneDefinition>;
 }
