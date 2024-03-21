@@ -94,7 +94,6 @@ export default class GameController<IOType = ReactNode> {
     handleInput(input?: IOType) {
         if (input) {
             // TODO build proper input handling
-            this.console.appendOutput([input]);
         }
     }
 }
