@@ -3,6 +3,8 @@
 import { ConsoleController } from "../../../utils";
 import { ReactNode } from "react";
 import { GameDiscDefinition } from "./gameTypes";
+import Action from "./classes/Action";
+import { Player, RoomID, Zone } from "./classes";
 
 /**
  * This class should handle everything. It should build maps from JSON and store the
@@ -18,8 +20,75 @@ import { GameDiscDefinition } from "./gameTypes";
 export default class GameController<IOType = ReactNode> {
     public console: ConsoleController<IOType>;
 
+    private availableActions: Action[] = [];
+
+    /**
+     * We store one Zone in memory at any given time, the player's current Zone.
+     * The Zone class stores all of the Room information.
+     */
+    private currentZone?: Zone;
+    /** Keep track of the Player's current Room in the Zone */
+    private currentRoomID?: RoomID;
+
+    /**
+     * Build an instance of the GameController class, linking it to a ConsoleController
+     * to handle all of the game's I/O directly from this top-level controller.
+     */
     constructor({ console }: { console: ConsoleController<IOType> }) {
         this.console = console;
+    }
+
+    /**
+     * Store a reference to the Player object on this top-level controller.
+     * @private
+     */
+    private _player?: Player;
+
+    /**
+     * Assume the Player has been created by the time the getter is called.
+     */
+    public get player() {
+        return this._player as Player;
+    }
+
+    /**
+     * Assume the Zone is set when the getter is called.
+     */
+    public get zone() {
+        return this.currentZone as Zone;
+    }
+
+    /**
+     * This is going to do a lot of heavy lifting! Load the game disc, optionally
+     * including save data to persist the player's progress.
+     *
+     * TODO handle save game data LATER
+     */
+    async loadGame(disc: GameDiscDefinition /*, saveData?: unknown*/) {
+        // TODO loading message? Maybe?
+        /**
+         * TO LOAD THE GAME:
+         * 1. Load the disc information
+         * 2. Build the world map for the starting Zone
+         *      2a. Build a Room instance for each Room in the Zone
+         *      2b. These rooms are connected via their Exits
+         *      2c. Store the starting zone
+         */
+        const zoneDef = await disc.loadZone(0);
+
+        this.currentZone = new Zone(zoneDef);
+        this.currentRoomID = zoneDef.startingRoom;
+
+        /**
+         * Now that everything has been built in memory for our Zone, we can actually
+         * begin the I/O loop that makes up the actual gameplay.
+         * 1. Output some message to the Console to let the user know we're ready
+         * 2. Begin to process user input? Is it really that easy??
+         */
+
+        /**
+         * Is this an actual good use case for generator functions???
+         */
     }
 
     /**
@@ -31,10 +100,4 @@ export default class GameController<IOType = ReactNode> {
             this.console.appendOutput([input]);
         }
     }
-
-    /**
-     * This is going to do a lot of heavy lifting! Load the game disc, optionally
-     * including save data to persist the player's progress.
-     */
-    async loadGame(disc: GameDiscDefinition, saveData?: unknown) {}
 }
