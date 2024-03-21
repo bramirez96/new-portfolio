@@ -1,7 +1,7 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import "./Console.scss";
-import { KeyboardEventHandler, MouseEventHandler, useCallback, useRef } from "react";
+import { KeyboardEventHandler, MouseEventHandler, useCallback, useEffect, useRef } from "react";
 import { ConsoleProps } from "./Console.types";
 import { KeyEventHelpers } from "../../../utils";
 
@@ -11,6 +11,7 @@ export default function Console({
     onInputSubmit,
     inputPrefix = DEFAULT_CONSOLE_INPUT_PREFIX,
     consoleOutput = [],
+    focusOnLoad = true,
 }: ConsoleProps) {
     const inputRef = useRef<HTMLDivElement>(null);
 
@@ -39,6 +40,12 @@ export default function Console({
         },
         [onInputSubmit, inputRef]
     );
+
+    useEffect(() => {
+        if (inputRef.current && focusOnLoad) {
+            inputRef.current.focus();
+        }
+    }, [inputRef, focusOnLoad]);
 
     return (
         <div className="ui-console" onClick={onConsoleClick}>

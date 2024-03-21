@@ -20,6 +20,11 @@ export interface ConsoleProps {
      * want the input text to be cleared.
      */
     onInputSubmit?: (inputText?: string) => void | false;
+
+    /**
+     * `true` by default, will focus the Console input when the component is built
+     */
+    focusOnLoad?: boolean;
 }
 
 export interface ConsoleContainerProps extends ConsoleProps {
