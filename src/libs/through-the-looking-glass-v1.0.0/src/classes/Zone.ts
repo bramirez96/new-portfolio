@@ -1,6 +1,6 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { RoomDefinition, RoomID } from "./Room";
+import Room, { RoomDefinition, RoomID } from "./Room";
 import { ConditionMap } from "../gameTypes";
 
 /**
@@ -18,7 +18,21 @@ import { ConditionMap } from "../gameTypes";
  * - second, the player's save data (not yet implemented)
  */
 export default class Zone {
-    private readonly conditions: ConditionMap = {};
+    private readonly conditions: ConditionMap;
+    private readonly rooms: Record<RoomID, Room> = {};
+
+    /**
+     * Build an instance of the Zone class based on the given definition.
+     */
+    constructor(zoneDefinition: ZoneDefinition) {
+        // Store the conditions map directly, it's the same format.
+        this.conditions = zoneDefinition.conditions;
+
+        // Iterate over the rooms in the definition, build and store internally
+        for (const roomDefinition of zoneDefinition.rooms) {
+            this.rooms[roomDefinition.id] = new Room(roomDefinition);
+        }
+    }
 
     hasCondition(condition: string): boolean {
         return this.conditions[condition] ?? false;
@@ -53,5 +67,5 @@ export type ZoneDefinition = {
     /**
      * A key/value store mapping Room IDs to their respective definitions.
      */
-    rooms: Record<RoomID, RoomDefinition>;
+    rooms: RoomDefinition[];
 };
