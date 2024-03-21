@@ -20,6 +20,7 @@ export default function LookingGlassContainer(_props: LookingGlassProps) {
             // ...load the proper game disc...
             gameController.loadGame(ThroughTheLookingGlass).then(() => {
                 // ...then what?
+                console.log(gameController); // So we can check that everything was built!
             });
         }
     }, [gameController]);
