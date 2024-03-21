@@ -35,20 +35,22 @@ export default {
         // Initialize the Zone without the "empty mirror" condition
         [Z00_EMPTY_MIRROR]: false,
     },
-    rooms: {
+    rooms: [
         // TODO define what happens once you're able to go "Outside" (it's indefinitely blocked)
-        [Z00_OUTSIDE]: {
+        {
+            id: Z00_OUTSIDE,
             onEnter: "You are outside.",
             // Don't need exits, game should end on enter
             exits: [],
         },
-        [Z00_APT_BED]: {
+        {
+            id: Z00_APT_BED,
             /**
              * This Room has different entry text based on the state of the game.
              * Since this is the starting Room, we're adding some more context and
              * flavor text to get the Player into the game.
              */
-            onEnter: (room, { zone }) => {
+            onEnter: (room, game) => {
                 let onEnterText = "";
 
                 if (!room.isVisited) {
@@ -76,7 +78,7 @@ export default {
                 }
 
                 // We don't want this text to show after the "tapping" stops!
-                if (zone.hasCondition(Z00_TAPPING)) {
+                if (game.zone.hasCondition(Z00_TAPPING)) {
                     onEnterText += "\n";
 
                     // TODO is this text cringe? Need to decide
@@ -100,13 +102,14 @@ export default {
             ],
             features: [],
         },
-        [Z00_APT_LR]: {
-            onEnter: (_room, { zone }) => {
+        {
+            id: Z00_APT_LR,
+            onEnter: (_room, game) => {
                 let onEnterText =
                     "You're standing in your living room. Last night's dinner sits " +
                     "on the coffee table, unfinished.";
 
-                if (zone.hasCondition(Z00_TAPPING)) {
+                if (game.zone.hasCondition(Z00_TAPPING)) {
                     onEnterText +=
                         " You hear the strange tapping sound again, slightly louder " +
                         "than when you woke." +
@@ -125,17 +128,17 @@ export default {
                     id: Z00_OUTSIDE,
                     displayText: tagged`To the ${"north"} is the door of your apartment.`,
                     // This exit is blocked so long as the player is still agoraphobic
-                    blocked: (_exit, { player }) => {
-                        return player.hasCondition(PLAYER_CONDITIONS.AGORAPHOBIC);
+                    blocked: (_exit, _cur, _target, game) => {
+                        return game.player.hasCondition(PLAYER_CONDITIONS.AGORAPHOBIC);
                     },
                 },
                 {
                     id: Z00_APT_KIT,
-                    displayText: (exit) => {
+                    displayText: (_exit, currentRoom) => {
                         let exitText = tagged`To the ${"west"} is your kitchen.`;
 
                         // Flavor text for the first time you're in the living room.
-                        if (!exit.currentRoom.isVisited) {
+                        if (!currentRoom.isVisited) {
                             exitText +=
                                 " When was the last time you ate? The days are starting to blur together.";
                         }
@@ -145,14 +148,14 @@ export default {
                 },
                 {
                     id: Z00_APT_BATH,
-                    displayText: (_exit, { zone }) => {
+                    displayText: (_exit, _cur, _target, game) => {
                         let exitText = tagged`To the ${"east"} is your bathroom.`;
 
                         // Flavor text that changes based on Zone state.
-                        if (zone.hasCondition(Z00_EMPTY_MIRROR)) {
+                        if (game.zone.hasCondition(Z00_EMPTY_MIRROR)) {
                             // TODO text update maybe?
                             exitText += " You shudder.";
-                        } else if (!zone.hasCondition(Z00_TAPPING)) {
+                        } else if (!game.zone.hasCondition(Z00_TAPPING)) {
                             exitText += " What just happened?";
                         }
 
@@ -161,14 +164,15 @@ export default {
                 },
             ],
         },
-        [Z00_APT_KIT]: {
-            onEnter: (_room, { zone }) => {
+        {
+            id: Z00_APT_KIT,
+            onEnter: (_room, game) => {
                 let onEnterText =
                     "You look around. The sink is full of dishes. How long " +
                     "has it been since you've cleaned up? There's no way to " +
                     "know for sure.";
 
-                if (zone.hasCondition(Z00_TAPPING)) {
+                if (game.zone.hasCondition(Z00_TAPPING)) {
                     onEnterText +=
                         "\n" +
                         "You pause momentarily, listening closely as the tapping starts again. " +
@@ -186,11 +190,12 @@ export default {
                 },
             ],
         },
-        [Z00_APT_BATH]: {
-            onEnter: (_room, { zone }) => {
-                let onEnterText = "";
+        {
+            id: Z00_APT_BATH,
+            onEnter: (_room, game) => {
+                let onEnterText;
 
-                if (zone.hasCondition(Z00_EMPTY_MIRROR)) {
+                if (game.zone.hasCondition(Z00_EMPTY_MIRROR)) {
                     // After the second mirror interaction, the mirror is empty, changing the flavor text
                     onEnterText =
                         "Momentarily frozen in shock, you consider what just happened." +
@@ -202,7 +207,7 @@ export default {
                         "They felt real enough at the time, but never as real as this. This was new." +
                         "\n" +
                         "You feel your heart pounding in your head.";
-                } else if (zone.hasCondition(Z00_TAPPING)) {
+                } else if (game.zone.hasCondition(Z00_TAPPING)) {
                     // Before the first mirror interaction, the tapping sound is still occurring
                     onEnterText =
                         "You look around. It's a fairly standard bathroom with a " +
@@ -239,5 +244,5 @@ export default {
                 },
             ],
         },
-    },
+    ],
 } as ZoneDefinition;
