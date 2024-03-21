@@ -11,12 +11,15 @@ import "./LookingGlass.scss";
 export interface LookingGlassProps {}
 
 export default function LookingGlassContainer(_props: LookingGlassProps) {
-    const [gameController, consoleProps] = useGameController(ThroughTheLookingGlass);
+    const [gameController, consoleProps] = useGameController();
 
     // Once the game controller is built...
     useEffect(() => {
         if (gameController) {
-            // TODO load the game controller
+            // ...load the proper game disc...
+            gameController.loadGame(ThroughTheLookingGlass).then(() => {
+                // ...then what?
+            });
         }
     }, [gameController]);
 

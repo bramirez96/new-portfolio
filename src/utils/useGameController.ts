@@ -4,7 +4,6 @@ import { ReactNode, useCallback, useEffect, useState } from "react";
 import { ConsoleController } from "./index";
 import GameController from "../libs/through-the-looking-glass-v1.0.0/src/GameController";
 import { ConsoleContainerProps } from "../components/organisms/Console/Console.types";
-import { GameDiscDefinition } from "../libs/through-the-looking-glass-v1.0.0/src/gameTypes";
 
 export type ConsoleControllerBuildCB = (
     params: ConstructorParameters<typeof ConsoleController<ReactNode>>[0]
@@ -12,9 +11,16 @@ export type ConsoleControllerBuildCB = (
 
 export type ConsoleInputSubmitCB = (inputText?: string) => void;
 
-export default function useGameController(
-    gameDisc: GameDiscDefinition
-): [gameController: GameController<ReactNode> | undefined, consoleProps: ConsoleContainerProps] {
+/**
+ * This is some general boilerplate for connecting a GameController instance to an
+ * instance of a ConsoleController, which is required to play our games within our
+ * custom Console component. As you can see, there's a level of tedium here, and I
+ * didn't want this cluttering our display/play layer.
+ */
+export default function useGameController(): [
+    gameController: GameController<ReactNode> | undefined,
+    consoleProps: ConsoleContainerProps
+] {
     const [consoleController, setConsoleController] = useState<ConsoleController<ReactNode>>();
     const [gameController, setGameController] = useState<GameController<ReactNode>>();
 
