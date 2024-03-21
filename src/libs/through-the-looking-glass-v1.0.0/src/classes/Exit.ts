@@ -29,23 +29,12 @@ export default class Exit {
         this.blocked = typeof blocked !== "function" ? () => blocked : blocked;
     }
 
-    // get isBlocked() {
-    //     // TODO read these from existing state somewhere instead of creating new ones
-    //     return this.blocked(this, {
-    //         game: new GameController(),
-    //         player: new Player(),
-    //         zone: new Zone(),
-    //     });
-    // }
-    //
-    // get isLocked() {
-    //     // TODO read these from existing state somewhere instead of creating new ones
-    //     return this.locked(this, {
-    //         game: new GameController(),
-    //         player: new Player(),
-    //         zone: new Zone(),
-    //     });
-    // }
+    /**
+     * Pass in a Key object, returns true if the Key is correct for the Exit.
+     */
+    public isCorrectKey(key: Key): boolean {
+        return key.codeMatches(this.keyCode as string);
+    }
 }
 
 export type ExitCallback<ReturnType> = (exit: Exit, gameState: GameCallbackState) => ReturnType;
