@@ -1,6 +1,7 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
 import { ZoneDefinition, ZoneID } from "./classes";
+import { ReactNode } from "react";
 
 /**
  * Conditions should be tracked by creating string constants for reference keys
@@ -9,8 +10,9 @@ import { ZoneDefinition, ZoneID } from "./classes";
 export type ConditionMap = Record<string, boolean>;
 
 /**
- * This is effectively how we will
+ * This is effectively how we will define our game "discs".
  */
 export type GameDiscDefinition = {
     loadZone: (zoneID?: ZoneID) => Promise<ZoneDefinition>;
+    welcomeMessage: ReactNode[];
 };
