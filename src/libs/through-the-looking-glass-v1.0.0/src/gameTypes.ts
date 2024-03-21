@@ -1,7 +1,6 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { ZoneDefinition } from "./classes/Zone";
-import { ZoneID } from "../../through-the-looking-glass-v0.1.0/src/GameController";
+import { ZoneDefinition, ZoneID } from "./classes";
 
 /**
  * Conditions should be tracked by creating string constants for reference keys

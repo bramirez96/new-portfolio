@@ -43,6 +43,7 @@ export default class Zone {
     }
 }
 
+export type ZoneID = number;
 export type ZoneDefinition = {
     /**
      * A 2D matrix positionally mapping the Zone's rooms.

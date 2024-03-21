@@ -16,6 +16,5 @@
         "noEmit": true,
         "jsx": "react-jsx"
     },
-    "include": ["src"],
-    "exclude": ["src/libs/through-the-looking-glass-v0.1.0"]
+    "include": ["src"]
 }

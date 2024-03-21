@@ -1,7 +1,6 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import { ZoneDefinition } from "./classes";
-import { ZoneID } from "../../through-the-looking-glass-v0.1.0/src/GameController";
+import { ZoneDefinition, ZoneID } from "./classes";
 
 /**
  * Create a dynamic import map that lets us lazy load the Zone information as needed.
