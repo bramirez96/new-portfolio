@@ -7,6 +7,7 @@ import { useGameController } from "../../utils";
 import { useEffect } from "react";
 
 import "./LookingGlass.scss";
+import { Text } from "../../components/atoms";
 
 export interface LookingGlassProps {}
 
@@ -24,7 +25,13 @@ export default function LookingGlassContainer(_props: LookingGlassProps) {
     }, [gameController]);
 
     return (
-        <HomeTemplate>
+        <HomeTemplate className="ui-looking-glass-page">
+            <div className="ui-title-section">
+                <Text size="x-large">
+                    <em>Through the Looking Glass</em>
+                </Text>
+                <Text size="small">A console-based interactive fiction adventure.</Text>
+            </div>
             <div className={classnames("ui-looking-glass-wrapper")}>
                 <Console {...consoleProps} />
             </div>
