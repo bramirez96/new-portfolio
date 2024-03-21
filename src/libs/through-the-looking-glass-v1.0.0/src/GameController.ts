@@ -85,10 +85,7 @@ export default class GameController<IOType = ReactNode> {
          * 1. Output some message to the Console to let the user know we're ready
          * 2. Begin to process user input? Is it really that easy??
          */
-
-        /**
-         * Is this an actual good use case for generator functions???
-         */
+        this.console.updateOutput(disc.welcomeMessage as IOType[]);
     }
 
     /**
