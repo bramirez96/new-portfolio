@@ -1,7 +1,7 @@
 // ! Copyright (c) 2024, Brandon Ramirez, brr.dev
 
-import Room, { RoomDefinition, RoomID } from "./Room";
 import { ConditionMap } from "../gameTypes";
+import Room, { RoomDefinition, RoomID } from "./Room";
 
 /**
  * The Zone class contains a fully-loaded section of the game world. It should
@@ -40,6 +40,10 @@ export default class Zone {
 
     setCondition(condition: string, state: boolean): void {
         this.conditions[condition] = state;
+    }
+
+    getRoom(roomID: RoomID): Room | undefined {
+        return this.rooms[roomID];
     }
 }
 
