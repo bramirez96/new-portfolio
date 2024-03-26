@@ -20,7 +20,10 @@ import { Player, RoomID, Zone } from "./classes";
 export default class GameController<IOType = ReactNode> {
     public console: ConsoleController<IOType>;
 
-    private availableActions: Action[] = [];
+    /**
+     * If true, ignore the next input, then unpause.
+     */
+    private paused: boolean = false;
 
     /**
      * We store one Zone in memory at any given time, the player's current Zone.
@@ -86,14 +89,41 @@ export default class GameController<IOType = ReactNode> {
          * 2. Begin to process user input? Is it really that easy??
          */
         this.console.updateOutput(disc.welcomeMessage as IOType[]);
+        this.pause();
     }
 
     /**
      * Process raw user input strings from the console into game commands.
      */
-    handleInput(input?: IOType) {
-        if (input) {
+    handleInput(input?: string) {
+        // TODO reconsider this pause methodology
+        if (this.paused) {
+            // If paused, ignore the input, reset the input prefix, and unpause
+            this.paused = false;
+            this.console.updatePrefix();
+        } else if (input) {
             // TODO build proper input handling
+            const currentRoom = this.getCurrentRoom();
+            // TODO fix this typing issue
+            const roomActions = currentRoom?.getAvailableActions(this);
         }
+    }
+
+    /**
+     * Pause input, optionally with a message. While input is paused, the next input
+     * received is ignored. After ignoring the input, the input prefix will reset to
+     * an empty string and the console will un-pause, allowing further inputs.
+     */
+    pause(message: string = ""): void {
+        this.console.updatePrefix(message);
+        this.paused = true;
+    }
+
+    public getRoom(roomID: RoomID): Room | undefined {
+        return this.zone.getRoom(roomID);
+    }
+
+    public getCurrentRoom() {
+        return this.getRoom(this.currentRoomID as RoomID);
     }
 }
