@@ -3,8 +3,7 @@
 import { ConsoleController } from "../../../utils";
 import { ReactNode } from "react";
 import { GameDiscDefinition } from "./gameTypes";
-import Action from "./classes/Action";
-import { Player, RoomID, Zone } from "./classes";
+import { Player, Room, RoomID, Zone } from "./classes";
 
 /**
  * This class should handle everything. It should build maps from JSON and store the
@@ -19,12 +18,14 @@ import { Player, RoomID, Zone } from "./classes";
  */
 export default class GameController<IOType = ReactNode> {
     public console: ConsoleController<IOType>;
-
+    /**
+     * Store a reference to the Player object on this top-level controller.
+     */
+    public player: Player;
     /**
      * If true, ignore the next input, then unpause.
      */
     private paused: boolean = false;
-
     /**
      * We store one Zone in memory at any given time, the player's current Zone.
      * The Zone class stores all of the Room information.
@@ -39,19 +40,7 @@ export default class GameController<IOType = ReactNode> {
      */
     constructor({ console }: { console: ConsoleController<IOType> }) {
         this.console = console;
-    }
-
-    /**
-     * Store a reference to the Player object on this top-level controller.
-     * @private
-     */
-    private _player?: Player;
-
-    /**
-     * Assume the Player has been created by the time the getter is called.
-     */
-    public get player() {
-        return this._player as Player;
+        this.player = new Player();
     }
 
     /**
@@ -101,20 +90,42 @@ export default class GameController<IOType = ReactNode> {
             // If paused, ignore the input, reset the input prefix, and unpause
             this.paused = false;
             this.console.updatePrefix();
+
+            const currentRoom = this.getCurrentRoom();
+            const roomEnterText = currentRoom.onEnter(this as unknown as GameController);
+
+            // Output current room text
+            this.console.updateOutput([roomEnterText, <br />] as IOType[]);
         } else if (input) {
             // TODO build proper input handling
             const currentRoom = this.getCurrentRoom();
             // TODO fix this typing issue
-            const roomActions = currentRoom?.getAvailableActions(this);
+            const roomActions = currentRoom?.getAvailableActions(this as unknown as GameController);
+
+            // Check if the passed-in input matches any available actions
+            if (roomActions && roomActions?.has(input)) {
+                roomActions.get(input)?.doAction();
+            } else {
+                this.appendOutput("You're not sure how you'd do that...");
+            }
         }
+    }
+
+    /**
+     * TODO this helper exists to bandaid the awkward typing, fix it
+     */
+    appendOutput(newOutput: ReactNode) {
+        this.console.appendOutput(newOutput as IOType[]);
     }
 
     /**
      * Pause input, optionally with a message. While input is paused, the next input
      * received is ignored. After ignoring the input, the input prefix will reset to
      * an empty string and the console will un-pause, allowing further inputs.
+     *
+     * TODO fix this typing issue
      */
-    pause(message: string = ""): void {
+    pause(message: IOType = "" as IOType): void {
         this.console.updatePrefix(message);
         this.paused = true;
     }
@@ -124,6 +135,6 @@ export default class GameController<IOType = ReactNode> {
     }
 
     public getCurrentRoom() {
-        return this.getRoom(this.currentRoomID as RoomID);
+        return this.getRoom(this.currentRoomID as RoomID) as Room;
     }
 }

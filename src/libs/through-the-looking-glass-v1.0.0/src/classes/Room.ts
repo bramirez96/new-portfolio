@@ -6,6 +6,9 @@ import Exit, { ExitDefinition } from "./Exit";
 import { Feature } from "./index";
 import GameController from "../GameController";
 import { asFunction } from "../gameHelpers";
+import Action from "./Action";
+import ActionMap from "./ActionMap";
+import { ViewInventoryAction } from "./actions";
 
 /**
  * Instances of the Room class represent a single tile on the Zone map. Each
@@ -18,10 +21,8 @@ import { asFunction } from "../gameHelpers";
  */
 export default class Room {
     public roomID: RoomID;
+    public onEnter: (gameController: GameController) => string;
     private visited = false;
-
-    private onEnter: RoomCallback<string>;
-
     private readonly exits: Exit[] = [];
     private readonly items: Item[] = [];
     private readonly features: Feature[] = [];
@@ -31,7 +32,11 @@ export default class Room {
      */
     constructor({ id, exits, features, items, onEnter }: RoomDefinition) {
         this.roomID = id;
-        this.onEnter = asFunction(onEnter);
+        this.onEnter = (gameController: GameController) => {
+            const enterText = (asFunction(onEnter) as RoomCallback<string>)(this, gameController);
+            this.visited = true;
+            return enterText;
+        };
 
         for (const exitDefinition of exits) {
             this.exits.push(new Exit(exitDefinition));
@@ -53,6 +58,16 @@ export default class Room {
     /** If true, this Room has been visited at least once. */
     get isVisited() {
         return this.visited;
+    }
+
+    /** Get a collection of all actions currently available in the room */
+    public getAvailableActions(gameController: GameController): Map<string, Action> {
+        const actions = new ActionMap();
+
+        // Always add the CheckInventory and ViewHelp actions
+        actions.register(new ViewInventoryAction(gameController));
+
+        return actions;
     }
 }
 

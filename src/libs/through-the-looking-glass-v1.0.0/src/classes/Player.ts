@@ -8,7 +8,7 @@ export const PLAYER_CONDITIONS = {
 };
 
 export default class Player {
-    private readonly inventory: Item[] = [];
+    public readonly inventory: Item[] = [];
 
     private readonly conditions: ConditionMap = {
         // Player is initialized with agoraphobia by default.
@@ -23,9 +23,5 @@ export default class Player {
 
     setCondition(condition: string, state: boolean): void {
         this.conditions[condition] = state;
-    }
-
-    viewInventory(): void {
-        // TODO print out items
     }
 }

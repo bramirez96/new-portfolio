@@ -8,6 +8,7 @@ export default class Action<MethodArgs extends unknown[] = unknown[]> {
     constructor(hotkeys: string, method: (...args: MethodArgs) => void, ...methodArgs: MethodArgs) {
         this.hotkeys = hotkeys;
         this.doAction = () => {
+            console.log("HIT DO ACTION");
             method(...methodArgs);
         };
     }
